@@ -1,4 +1,6 @@
 export default {
+  target: 'server',
+  ssr: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'denimintsaev',
@@ -31,9 +33,7 @@ export default {
     baseURL: '/',
     browserBaseURL: 'http://localhost:3000',
   },
-  serverMiddleware: {
-    '/api': '~/server',
-  },
+  serverMiddleware: [{ path: '/api', handler: '~/server' }],
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     postcss: {
@@ -42,5 +42,7 @@ export default {
         autoprefixer: {},
       },
     },
+    //watch: ['~/server'],
   },
+  telemetry: false,
 };
