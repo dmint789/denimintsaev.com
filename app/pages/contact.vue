@@ -1,14 +1,17 @@
 <template>
-  <div class="p-12">
-    <ul>
-      <li class="flex justify-center">
-        <a
-          href="https://www.youtube.com/c/DeniMintsaev"
-          class="mb-4 text-black hover:text-gray-800 text-xl"
-          >YouTube</a
-        >
-      </li>
-    </ul>
+  <div class="p-12 flex flex-col items-center gap-8">
+    <h1 class="text-5xl">My Links</h1>
+    <div class="flex flex-col items-center gap-4">
+      <MyButton text="YouTube" link="https://youtube.com/c/DeniMintsaev" />
+      <MyButton text="Patreon" link="https://patreon.com/denimintsaev" />
+      <MyButton text="Bandcamp" link="https://makecound.bandcamp.com/" />
+      <MyButton text="Odysee" link="https://odysee.com/@denthebro:3" />
+      <MyButton
+        text="WCA Profile"
+        link="https://worldcubeassociation.org/persons/2013MINT01"
+      />
+    </div>
+    <p class="text-xl">Email: cube327@tuta.io</p>
   </div>
 </template>
 

@@ -36,6 +36,11 @@
             >Blog</a
           >
           <a
+            href="/patreon"
+            class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-6"
+            >Patreon</a
+          >
+          <a
             href="/contact"
             class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300"
             >Contact</a

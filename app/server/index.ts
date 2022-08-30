@@ -20,16 +20,16 @@ app.use('/api/posts', require('./routes/api/posts'));
 
 // Database
 const options = {
+  dbName: 'denimintsaev',
   useNewUrlParser: true,
   useUnifiedTopology: true,
   keepAlive: true,
-  autoIndex: false,
-  poolSize: 50,
-  retryWrites: false,
-  socketTimeoutMS: 30000,
+  //autoIndex: false,
+  //poolSize: 50,
+  //retryWrites: false,
+  //socketTimeoutMS: 30000,
   //useFindAndModify: true,
   //useCreateIndex: true,
-  //dbName: 'denimintsaev',
 };
 
 mongoose
