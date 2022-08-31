@@ -1,6 +1,6 @@
 <template>
   <button
-    class="w-32 h-12 box-content text-lg transition-all"
+    class="w-40 h-14 box-content text-xl transition-all"
     :class="black ? 'black' : 'white'"
     @click="handleClick"
   >

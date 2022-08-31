@@ -1,6 +1,8 @@
 import express from 'express';
-import mongoose, { CallbackWithoutResult } from 'mongoose';
+import mongoose from 'mongoose';
 import cors from 'cors';
+
+import PostsRouter from './routes/posts';
 
 const app = express();
 
@@ -16,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Routes
-app.use('/api/posts', require('./routes/api/posts'));
+app.use('/api/posts', PostsRouter);
 
 // Database
 const options = {
@@ -35,7 +37,7 @@ const options = {
 mongoose
   .connect(dbURI, options)
   .then(() => console.log('Connected to the DB'))
-  .catch((err: any) => console.log(err));
+  .catch((err) => console.log(err));
 
 app.listen(5000, () => console.log(`Server is listening on port 5000`));
 
