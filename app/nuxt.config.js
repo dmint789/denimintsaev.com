@@ -33,6 +33,15 @@ export default {
     baseURL: '/',
     browserBaseURL: 'http://localhost:3000',
   },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'kanjiSorter',
+        path: '/kanjisorter',
+        component: resolve(__dirname, 'pages/projects/kanjiSorter.vue'),
+      });
+    },
+  },
   serverMiddleware: [{ path: '/api', handler: '~/server' }],
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -42,7 +51,6 @@ export default {
         autoprefixer: {},
       },
     },
-    //watch: ['~/server'],
   },
   telemetry: false,
 };

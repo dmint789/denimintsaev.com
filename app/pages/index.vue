@@ -1,6 +1,6 @@
 <template>
-  <div class="m-12 flex flex-col items-center">
-    <h1 class="mb-6 text-5xl">Hello!</h1>
+  <div class="flex flex-col items-center">
+    <MyHeader text="Hello!" />
     <p class="w-1/3 text-xl text-justify">
       My name is Deni and I come from Russia. My main activities include
       language learning, YouTube, speedcubing and music.<br /><br />

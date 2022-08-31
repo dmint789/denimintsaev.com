@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
     <nav
-      class="flex items-center justify-between flex-wrap bg-black px-32 py-6"
+      class="px-32 py-6 flex items-center justify-between flex-wrap bg-black"
     >
       <div class="flex items-center flex-shrink-0 text-white mr-8">
         <span class="text-2xl font-semibold">Deni Mintsaev</span>
@@ -48,7 +48,12 @@
         </div>
       </div>
     </nav>
-    <Nuxt />
+    <div class="flex-1 flex">
+      <Nuxt class="w-screen" />
+    </div>
+    <footer class="py-6 bg-black">
+      <h4 class="text-center text-white">Deni Mintsaev 2022</h4>
+    </footer>
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
   <button
-    class="w-32 py-2 text-lg bg-white border border-black hover:text-white hover:bg-black hover:border-white transition-all"
+    class="w-32 h-12 box-content text-lg transition-all"
+    :class="black ? 'black' : 'white'"
     @click="handleClick"
   >
     {{ text }}
@@ -17,6 +18,10 @@
         type: String,
         default: 'Button',
       },
+      black: {
+        type: Boolean,
+        default: false,
+      },
       link: {
         type: String,
       },
@@ -27,7 +32,8 @@
     methods: {
       handleClick() {
         if (this.link) {
-          window.location.href = this.link;
+          if (this.link.includes('https://')) window.location.href = this.link;
+          else this.$router.push(this.link);
         } else {
           this.onClick();
         }
@@ -36,4 +42,11 @@
   });
 </script>
 
-<style lang="postcss" scoped></style>
+<style lang="postcss" scoped>
+  .white {
+    @apply text-black bg-white border border-black hover:text-white hover:bg-black hover:border-white;
+  }
+  .black {
+    @apply text-white bg-black border border-white hover:text-black hover:bg-white hover:border-black;
+  }
+</style>
