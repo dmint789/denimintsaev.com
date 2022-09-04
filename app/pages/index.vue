@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center">
-    <MyHeader text="Hello!" />
+    <MyHeader :size="5">Hello!</MyHeader>
     <p class="w-1/3 text-xl text-justify">
       My name is Deni and I come from Russia. My main activities include
       language learning, YouTube, speedcubing and music.<br /><br />

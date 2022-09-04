@@ -4,7 +4,7 @@
     :class="black ? 'black' : 'white'"
     @click="handleClick"
   >
-    {{ text }}
+    <slot />
   </button>
 </template>
 
@@ -14,10 +14,6 @@
   export default Vue.extend({
     name: 'MyButton',
     props: {
-      text: {
-        type: String,
-        default: 'Button',
-      },
       black: {
         type: Boolean,
         default: false,

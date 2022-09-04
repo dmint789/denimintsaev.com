@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col items-center">
-    <MyHeader text="Projects" />
+    <MyHeader :size="5">Projects</MyHeader>
     <div class="flex flex-col items-center gap-4">
-      <MyButton text="Kanji Sorter" link="/kanjisorter" />
+      <MyButton link="/kanjisorter">Kanji Sorter</MyButton>
     </div>
   </div>
 </template>

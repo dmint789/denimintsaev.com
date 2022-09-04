@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full p-6 text-center">
-    <h1 class="text-4xl" :class="white ? 'text-white' : 'text-black'">
-      {{ text }}
+  <div class="w-full text-center" :class="`p-${size}`">
+    <h1 :class="[textSize, white ? 'text-white' : 'text-black']">
+      <slot />
     </h1>
   </div>
 </template>
@@ -12,13 +12,23 @@
   export default Vue.extend({
     name: 'MyHeader',
     props: {
-      text: {
-        type: String,
-        required: true,
-      },
       white: {
         type: Boolean,
         default: false,
+      },
+      size: {
+        type: Number,
+        default: 3,
+      },
+    },
+    computed: {
+      textSize(): String {
+        switch (this.size) {
+          case 1:
+            return 'text-xl';
+          default:
+            return `text-${this.size}xl`;
+        }
       },
     },
   });
