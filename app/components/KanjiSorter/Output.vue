@@ -12,18 +12,26 @@
           id="update"
           name="update"
           @change="(e) => setValue({ field: 'update', value: e.target.checked })"
-          :checked="update"
+          :checked="getUpdate()"
           class="w-5 h-5"
         />
       </div>
     </div>
-    <textarea
-      name="inputtext"
-      placeholder="Result"
-      :value="getOutput()"
-      class="w-full h-80 max-h-80 mt-4 px-3 py-2 text-2xl items-start border-2 border-black hover:bg-mygray-50"
-    >
-    </textarea>
+    <div class="w-full h-80 mt-4 px-2 py-1 border-2 border-black">
+      <div v-if="getView() === 'default'" class="w-full h-full overflow-auto">
+        <p v-for="i in getSorted()" :key="Math.random(i)">
+          {{ i.c }} {{ i.occurrences }} {{ i.p }} {{ i.v }}
+        </p>
+      </div>
+      <textarea
+        v-if="getView() === 'kanjionly'"
+        name="inputtext"
+        placeholder="Result"
+        :value="getOutput()"
+        class="w-full h-full max-h-80 px-3 py-2 text-2xl items-start hover:bg-mygray-50"
+      >
+      </textarea>
+    </div>
     <div class="mb-8 grid grid-cols-5">
       <div class="text-xl">
         <MyHeader :size="2">View</MyHeader>
@@ -35,7 +43,7 @@
               id="default"
               value="default"
               @change="(e) => changeView(e.target.value)"
-              :checked="view === 'default'"
+              :checked="getView() === 'default'"
               class="w-5 h-5 mr-2"
             />
             <label for="default">Default</label>
@@ -47,7 +55,7 @@
               id="kanjionly"
               value="kanjionly"
               @change="(e) => changeView(e.target.value)"
-              :checked="view === 'kanjionly'"
+              :checked="getView() === 'kanjionly'"
               class="w-5 h-5 mr-2"
             />
             <label for="kanjionly">Kanji only</label>
@@ -59,7 +67,7 @@
         <select
           name="sorttype"
           id="sorttype"
-          :value="sortType"
+          :value="getSortType()"
           @change="(e) => changeSortType(e.target.value)"
           class="mt-4 w-full h-12 px-1 border-2 border-black text-xl"
         >
@@ -76,7 +84,7 @@
         <select
           name="filter"
           id="filter"
-          :value="filterType"
+          :value="getFilterType()"
           @change="(e) => changeFilterType(e.target.value)"
           class="mt-4 w-full h-12 px-1 border-2 border-black text-xl"
         >
@@ -99,7 +107,8 @@
           id="repeats"
           name="repeats"
           @change="(e) => changeRepeats(e.target.checked)"
-          :checked="repeats"
+          :checked="getRepeats()"
+          :disabled="getSortType() !== 'textorder'"
           class="w-5 h-5"
         />
         <label for="repeats" class="text-2xl">Show repeats</label>
@@ -110,38 +119,45 @@
           id="reversed"
           name="reversed"
           @change="(e) => changeReversed(e.target.checked)"
-          :checked="reversed"
+          :checked="getReversed()"
           class="w-5 h-5"
         />
         <label for="reversed" class="text-2xl">Reversed</label>
       </div>
-      <MyButton black class="w-full">Add to list</MyButton>
-      <MyButton black class="w-full">Clear</MyButton>
+      <MyButton black :onClick="onAddToList" class="w-full">Add to list</MyButton>
+      <MyButton black :onClick="onClear" class="w-full">Clear</MyButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+  import { mapGetters, mapMutations, mapActions } from 'vuex';
 
   export default Vue.extend({
     name: 'KanjiSorterOutput',
-    mounted() {
-      console.log(this.view);
-    },
     computed: {
-      ...mapState('kanjiSorter', [
-        'view',
-        'sortType',
-        'filterType',
-        'repeats',
-        'reversed',
-        'update',
+      ...mapGetters([
+        'getOutput',
+        'getSorted',
+        'getUniqueKanji',
+        'getTotalKanji',
+        'getView',
+        'getSortType',
+        'getFilterType',
+        'getRepeats',
+        'getReversed',
+        'getUpdate',
       ]),
-      ...mapGetters([, 'getOutput', 'getUniqueKanji', 'getTotalKanji']),
     },
     methods: {
+      onAddToList() {
+        console.log(this.getSorted());
+      },
+      onClear() {
+        this.reset();
+      },
+
       ...mapMutations(['setValue']),
       ...mapActions([
         'changeView',
@@ -149,6 +165,7 @@
         'changeFilterType',
         'changeRepeats',
         'changeReversed',
+        'reset',
       ]),
     },
   });

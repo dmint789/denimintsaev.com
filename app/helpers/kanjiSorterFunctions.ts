@@ -1,6 +1,64 @@
+import { IKanji } from '~/helpers/interfaces/kanji';
+import { SortType } from '~/helpers/enums/sortType';
+
+export function listContainsKanji(list: Array<IKanji>, kanji: IKanji): boolean {
+  for (let i of list) {
+    if (i.c === kanji.c) return true;
+  }
+
+  return false;
+}
+
+// Gets the appropriate compare function according to the given sort type
+// < 0 means a goes before b, > 0 means a goes after b, 0 means they are the same
+export function getCompareFunc(
+  kanjiData: Array<any>,
+  sortType: SortType
+): (a: number, b: number) => number {
+  switch (sortType) {
+    case SortType.Occurrences:
+      return (a: number, b: number): number => {
+        return kanjiData[b].occurrences - kanjiData[a].occurrences;
+      };
+    case SortType.Newspapers:
+      return (a: number, b: number): number => {
+        return kanjiData[a].p - kanjiData[b].p;
+      };
+    case SortType.Novels:
+      return (a: number, b: number): number => {
+        return kanjiData[a].v - kanjiData[b].v;
+      };
+    case SortType.StrokeCount:
+      return (a: number, b: number): number => {
+        return kanjiData[b].s - kanjiData[a].s;
+      };
+    case SortType.JLPT:
+      return (a: number, b: number): number => {
+        return kanjiData[a].n - kanjiData[b].n;
+      };
+    default:
+      throw `Unable to retrieve compare function for sort type ${sortType}`;
+  }
+}
+
+export function isSortable(kanji: IKanji, sortType: SortType): boolean {
+  switch (sortType) {
+    case SortType.Newspapers:
+      return !!kanji.p;
+    case SortType.Novels:
+      return !!kanji.v;
+    case SortType.StrokeCount:
+      return !!kanji.s;
+    case SortType.JLPT:
+      return !!kanji.n;
+    default:
+      throw `Unable to check sortability for kanji; sort type: ${sortType}`;
+  }
+}
+
 // Returns the hash id for the input character if it is a kanji.
 // Otherwise returns null.
-export default function hash(character: string): number | null {
+export function hash(character: string): number | null {
   if (character.length === 1) {
     let id = character.charCodeAt(0);
 

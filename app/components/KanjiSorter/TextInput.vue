@@ -39,7 +39,7 @@
             id="replace"
             value="replace"
             @change="(e) => setValue({ field: 'mode', value: e.target.value })"
-            :checked="mode === 'replace'"
+            :checked="getMode() === 'replace'"
             class="w-5 h-5 ml-2"
           />
         </div>
@@ -51,7 +51,7 @@
             id="add"
             value="add"
             @change="(e) => setValue({ field: 'mode', value: e.target.value })"
-            :checked="mode === 'add'"
+            :checked="getMode() === 'add'"
             class="w-5 h-5 ml-2"
           />
         </div>
@@ -63,7 +63,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapState, mapMutations, mapActions } from 'vuex';
+  import { mapGetters, mapMutations, mapActions } from 'vuex';
 
   export default Vue.extend({
     name: 'KanjiSorterTextInput',
@@ -73,17 +73,21 @@
       };
     },
     computed: {
-      ...mapState('kanjiSorter', ['mode']),
+      ...mapGetters(['getMode']),
     },
     methods: {
       onClickAbout() {
         console.log('About');
       },
       onGetKanji() {
-        this.enterInput(this.inputBox);
+        if (this.inputBox) {
+          this.enterInput(this.inputBox);
+        }
       },
       onGetNewKanji() {},
-      onClear() {},
+      onClear() {
+        this.inputBox = '';
+      },
       onAddToList() {},
       onImportList() {},
 
