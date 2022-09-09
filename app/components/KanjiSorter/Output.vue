@@ -1,9 +1,7 @@
 <template>
   <div class="mt-6 mb-12">
     <div class="grid grid-cols-3 justify-between items-center">
-      <h2 class="text-2xl">
-        Unique kanji: {{ getUniqueKanji() }} | Total kanji: {{ getTotalKanji() }}
-      </h2>
+      <h2 class="text-2xl">Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</h2>
       <MyHeader :size="3" class="col-start-2">Result</MyHeader>
       <div class="flex justify-end items-center gap-3">
         <label for="update" class="text-2xl">Update</label>
@@ -17,17 +15,27 @@
         />
       </div>
     </div>
-    <div class="w-full h-80 mt-4 px-2 py-1 border-2 border-black">
-      <div v-if="getView() === 'default'" class="w-full h-full overflow-auto">
-        <p v-for="i in getSorted()" :key="Math.random(i)">
-          {{ i.c }} {{ i.occurrences }} {{ i.p }} {{ i.v }}
-        </p>
+    <div class="w-full h-80 mt-4 px-2 py-1 text-xl border-2 border-black">
+      <div v-if="getView() === 'default'" class="w-full h-full pr-2 overflow-auto">
+        <table class="w-full table-auto">
+          <tr>
+            <th>#</th>
+            <th>Kanji</th>
+            <th>Occurrences</th>
+            <th>Newspaper Rank</th>
+            <th>Novel Rank</th>
+            <th>Strokes</th>
+            <th>JLPT</th>
+            <th>Jōyō</th>
+          </tr>
+          <KanjiRow v-for="(k, index) in getSorted()" :key="index" :kanji="k" />
+        </table>
       </div>
       <textarea
         v-if="getView() === 'kanjionly'"
         name="inputtext"
         placeholder="Result"
-        :value="getOutput()"
+        :value="getKanjiOnly()"
         class="w-full h-full max-h-80 px-3 py-2 text-2xl items-start hover:bg-mygray-50"
       >
       </textarea>
@@ -111,7 +119,12 @@
           :disabled="getSortType() !== 'textorder'"
           class="w-5 h-5"
         />
-        <label for="repeats" class="text-2xl">Show repeats</label>
+        <label
+          for="repeats"
+          class="text-2xl"
+          :class="getSortType() === 'textorder' ? 'text-black' : 'text-mygray-600'"
+          >Show repeats</label
+        >
       </div>
       <div class="ml-4 flex items-center gap-3">
         <input
@@ -138,7 +151,6 @@
     name: 'KanjiSorterOutput',
     computed: {
       ...mapGetters([
-        'getOutput',
         'getSorted',
         'getUniqueKanji',
         'getTotalKanji',
@@ -148,12 +160,11 @@
         'getRepeats',
         'getReversed',
         'getUpdate',
+        'getKanjiOnly',
       ]),
     },
     methods: {
-      onAddToList() {
-        console.log(this.getSorted());
-      },
+      onAddToList() {},
       onClear() {
         this.reset();
       },

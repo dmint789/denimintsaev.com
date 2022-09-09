@@ -1,7 +1,7 @@
 <template>
   <div>
     <MyHeader :size="5">Kanji Sorter</MyHeader>
-    <div class="mx-auto w-1/2">
+    <div class="mx-auto w-full max-w-3xl">
       <KanjiSorterTextInput />
       <KanjiSorterOutput />
     </div>

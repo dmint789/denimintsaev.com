@@ -1,19 +1,13 @@
-import {
-  listContainsKanji,
-  getCompareFunc,
-  isSortable,
-  hash,
-} from '~/helpers/kanjiSorterFunctions';
+import { getCompareFunc, isSortable, hash } from '~/helpers/kanjiSorterFunctions';
 import { KanjiLinkedList, ListNode } from '~/helpers/sortedLinkedList';
-import { KanjiExtra } from '~/helpers/kanjiExtra';
-import { IKanji, IKanjiExt } from '~/helpers/interfaces/kanji';
+import { IKanji, IKanjiExt, IKanjiMin } from '~/helpers/interfaces/kanji';
 import { SortType } from '~/helpers/enums/sortType';
 import { FilterType } from '~/helpers/enums/filterType';
 
 export const state = () => ({
   // Data for all kanji
   kanjiData: [] as Array<IKanji>,
-  kanjiExtraData: [] as Array<KanjiExtra>,
+  kanjiExtraData: [] as Array<IKanjiExt>,
   // WIP list of kanji
   workingList: {
     // Original unsorted and unfiltered kanji
@@ -23,12 +17,10 @@ export const state = () => ({
     // Filtered kanji from that cannot be sorted (not covered by the sort type)
     unsorted: [] as Array<IKanjiExt>,
   },
-  // Output ready for display (kanjionly view only)
-  output: '',
   uniqueKanji: 0 as number,
   mode: 'replace' as 'replace' | 'add',
   view: 'default' as 'default' | 'kanjionly',
-  sortType: SortType.Occurrences,
+  sortType: SortType.TextOrder,
   filterType: FilterType.None,
   repeats: false,
   reversed: false,
@@ -37,9 +29,11 @@ export const state = () => ({
 
 export const getters = {
   getOriginal: (state: any) => (): string => state.workingList.original,
-  getSorted: (state: any) => (): Array<IKanjiExt> => state.workingList.sorted,
+  getSorted: (state: any) => (): Array<IKanjiExt> => {
+    if (!state.reversed) return state.workingList.sorted;
+    else return state.workingList.sorted.slice().reverse();
+  },
   getUnsorted: (state: any) => (): Array<IKanjiExt> => state.workingList.unsorted,
-  getOutput: (state: any) => (): string => state.output,
   getUniqueKanji: (state: any) => (): number => state.uniqueKanji,
   getTotalKanji: (state: any) => (): number => state.workingList.original.length,
   getMode: (state: any) => (): string => state.mode,
@@ -49,11 +43,16 @@ export const getters = {
   getRepeats: (state: any) => (): boolean => state.repeats,
   getReversed: (state: any) => (): boolean => state.reversed,
   getUpdate: (state: any) => (): boolean => state.update,
+  getKanjiOnly: (state: any) => (): string => {
+    if (state.sortType === SortType.TextOrder && state.repeats) return state.workingList.original;
+
+    return state.workingList.original;
+  },
 };
 
 export const mutations = {
   setKanjiData: (state: any, data: Array<IKanji>) => (state.kanjiData = data),
-  setKanjiExtraData: (state: any, data: Array<KanjiExtra>) => (state.kanjiExtraData = data),
+  setKanjiExtraData: (state: any, data: Array<IKanjiExt>) => (state.kanjiExtraData = data),
   setOriginalList: (state: any, data: string) => (state.workingList.original = data),
   setSortedList: (state: any, data: Array<IKanjiExt>) => (state.workingList.sorted = data),
   setUnsortedList: (state: any, data: Array<IKanjiExt>) => (state.workingList.unsorted = data),
@@ -61,170 +60,139 @@ export const mutations = {
 };
 
 export const actions = {
-  enterInput({ state, dispatch, commit }: any, input: string) {
+  enterInput({ dispatch }: any, input: string) {
     dispatch('sortWorkingList', input);
   },
   sortWorkingList({ state, commit }: any, input = '') {
-    let tempKanjiExtraData: Array<KanjiExtra>;
-    let tempOriginal: string;
-    let tempSorted: KanjiLinkedList;
-    let tempUnsorted: Array<IKanjiExt>;
-    let tempUniqueKanji = 0;
-    let id: number; // used for storing hash IDs
-
     if (!input) input = state.workingList.original;
+    if (input) {
+      let tempKanjiExtraData: Array<IKanjiExt>;
+      let tempOriginal = '';
+      let tempSorted: KanjiLinkedList;
+      let tempTextSorted: Array<IKanjiMin>;
+      let tempUnsorted = [] as Array<IKanjiExt>;
+      let tempUniqueKanji = 0;
+      let id: number; // used for storing hash IDs
 
-    // Initialize temp variables based on the selected mode. If the original list of kanji
-    // is empty, that means we need to start from scratch anyways.
-    if (state.mode === 'replace' || state.workingList.original.length === 0) {
-      tempKanjiExtraData = new Array<KanjiExtra>(state.kanjiData.length);
-      for (let i = 0; i < state.kanjiData.length; i++) tempKanjiExtraData[i] = new KanjiExtra();
+      // Initialize temp variables based on the selected mode. If the original list of kanji
+      // is empty, that means we need to start from scratch anyways.
+      if (state.mode === 'replace' || state.workingList.original.length === 0) {
+        tempKanjiExtraData = new Array<IKanjiExt>(state.kanjiData.length);
 
-      const compareFunc = getCompareFunc(
-        state.sortType === SortType.Occurrences ? tempKanjiExtraData : state.kanjiData,
-        state.sortType
-      );
+        if (state.sortType === SortType.TextOrder) tempTextSorted = new Array<IKanjiMin>();
+        else {
+          const compareFunc = getCompareFunc(
+            state.sortType === SortType.Occurrences ? tempKanjiExtraData : state.kanjiData,
+            state.sortType
+          );
+          tempSorted = new KanjiLinkedList(null, compareFunc);
+        }
+      } else {
+        tempKanjiExtraData = state.kanjiExtraData;
+        tempOriginal = state.workingList.original;
+        tempSorted = state.workingList.sorted;
+        tempUnsorted = state.workingList.unsorted;
+        tempUniqueKanji = state.uniqueKanji;
+      }
 
-      tempOriginal = '';
-      tempSorted = new KanjiLinkedList(null, compareFunc);
-      tempUnsorted = [];
-    } else {
-      tempKanjiExtraData = state.kanjiExtraData;
-      tempOriginal = state.workingList.original;
-      tempSorted = state.workingList.sorted;
-      tempUnsorted = state.workingList.unsorted;
-      tempUniqueKanji = state.uniqueKanji;
-    }
+      // Continue iterating through the input and adding kanji to the linked list while keeping it sorted
+      for (let i = 0; i < input.length; i++) {
+        id = hash(input[i]);
 
-    // Continue iterating through the input and adding kanji to the linked list while keeping it sorted
-    for (let i = 0; i < input.length; i++) {
-      id = hash(input[i]);
+        // If the hash function didn't return null, that means the character is a kanji
+        if (id !== null) {
+          tempOriginal += state.kanjiData[id].c;
 
-      // If the hash function didn't return null, that means the character is a kanji
-      if (id !== null) {
-        tempOriginal += state.kanjiData[id].c;
-        tempKanjiExtraData[id].occurrences++;
+          if (tempKanjiExtraData[id]) tempKanjiExtraData[id].occurrences++;
+          else tempKanjiExtraData[id] = { occurrences: 1 } as IKanjiExt;
 
-        if (state.sortType === SortType.Occurrences) {
-          if (tempKanjiExtraData[id].occurrences > 1) tempSorted.repositionInList(id);
-          else {
-            tempSorted.addToList(id);
+          if (state.sortType === SortType.TextOrder) {
+            if (tempKanjiExtraData[id].occurrences === 1) {
+              tempUniqueKanji++;
+              tempTextSorted.push({ i: id, index: tempUniqueKanji });
+            } else if (state.repeats) {
+              tempTextSorted.push({ i: id, index: 0 });
+            }
+          } else if (state.sortType === SortType.Occurrences) {
+            if (tempKanjiExtraData[id].occurrences > 1) tempSorted.repositionInList(id);
+            else {
+              tempSorted.addToList(id);
+              tempUniqueKanji++;
+            }
+          } else if (tempKanjiExtraData[id].occurrences === 1) {
+            if (isSortable(state.kanjiData[id], state.sortType)) {
+              tempSorted.addToList(id);
+            } else {
+              tempUnsorted.push({
+                ...state.kanjiData[id],
+                occurrences: tempKanjiExtraData[id].occurrences,
+              });
+            }
+
             tempUniqueKanji++;
           }
-        } else if (tempKanjiExtraData[id].occurrences === 1) {
-          if (isSortable(state.kanjiData[id], state.sortType)) tempSorted.addToList(id);
-          else {
-            tempUnsorted.push({
-              ...state.kanjiData[id],
-              occurrences: tempKanjiExtraData[id].occurrences,
-            });
-          }
-          tempUniqueKanji++;
         }
       }
-    }
-    console.log('done');
 
-    // Save the sorted linked list into an array ready for display
-    let tempSortedKanji = [] as Array<IKanjiExt>;
-    if (tempSorted.length > 0) {
-      tempSortedKanji = new Array<IKanjiExt>(tempSorted.length);
-      let pointer: ListNode<number>;
-      let i = 0;
+      // Save the sorted list into an array ready for display
+      let tempSortedKanji = [] as Array<IKanjiExt>;
+      if (state.sortType === SortType.TextOrder) {
+        tempSortedKanji = new Array<IKanjiExt>(tempTextSorted.length);
 
-      pointer = tempSorted[state.reversed ? 'tail' : 'head'];
-      while (pointer) {
-        tempSortedKanji[i] = {
-          ...state.kanjiData[pointer.data],
-          occurrences: tempKanjiExtraData[pointer.data].occurrences,
-        };
-        pointer = pointer[state.reversed ? 'previous' : 'next'];
-        i += state.reversed ? -1 : 1;
+        for (let i = 0; i < tempTextSorted.length; i++) {
+          tempSortedKanji[i] = {
+            ...state.kanjiData[tempTextSorted[i].i],
+            occurrences: tempKanjiExtraData[tempTextSorted[i].i].occurrences,
+            index: tempTextSorted[i].index,
+          };
+        }
+      } else if (tempSorted.length > 0) {
+        tempSortedKanji = new Array<IKanjiExt>(tempSorted.length);
+        let pointer = tempSorted.head as ListNode<number>;
+        let i = 0;
+
+        while (pointer) {
+          tempSortedKanji[i] = {
+            ...state.kanjiData[pointer.data],
+            occurrences: tempKanjiExtraData[pointer.data].occurrences,
+            index: i + 1,
+          };
+          pointer = pointer.next;
+          i++;
+        }
       }
+
+      commit('setKanjiExtraData', tempKanjiExtraData);
+      commit('setOriginalList', tempOriginal);
+      commit('setSortedList', tempSortedKanji);
+      commit('setUnsortedList', tempUnsorted);
+      commit('setValue', { field: 'uniqueKanji', value: tempUniqueKanji });
     }
-
-    commit('setKanjiExtraData', tempKanjiExtraData);
-    commit('setOriginalList', tempOriginal);
-    commit('setSortedList', tempSortedKanji);
-    commit('setUnsortedList', tempUnsorted);
-    commit('setValue', { field: 'uniqueKanji', value: tempUniqueKanji });
-
-    console.log('done');
-  },
-  updateOutput: ({ state, commit }: any) => {
-    // let tempOutput = '';
-    // let index = 1;
-    // if (state.view === 'default') {
-    //   if (state.sortType !== SortType.JLPT) {
-    //     const loop = (i: number) => {
-    //       tempOutput += `${index}\t${state.workingList.sorted[i].c}`;
-    //       // Display all properties that are present in the kanji entry
-    //       for (let j of ['o', 's', 'a', 'p', 'v', 'n', 'y']) {
-    //         tempOutput += '\t';
-    //         if (state.workingList.sorted[i][j]) tempOutput += state.workingList.sorted[i][j];
-    //       }
-    //       tempOutput += '\n';
-    //       index++;
-    //     };
-    //     if (!state.reversed) {
-    //       for (let i = 0; i < state.workingList.sorted.length; i++) loop(i);
-    //     } else {
-    //       for (let i = state.workingList.sorted.length - 1; i >= 0; i--) loop(i);
-    //     }
-    //   }
-    //   if (state.workingList.unsorted) tempOutput += '\n';
-    // } else {
-    //   // Add sorted kanji to the output either normally or in reverse order
-    //   if (!state.reversed) {
-    //     for (let i of state.workingList.sorted) tempOutput += i.c;
-    //   } else {
-    //     for (let i = state.workingList.sorted.length - 1; i >= 0; i--)
-    //       tempOutput += state.workingList.sorted[i].c;
-    //   }
-    // }
-    // tempOutput += state.workingList.unsorted;
-    // commit('setValue', { field: 'output', value: tempOutput });
   },
   reset: ({ commit }: any) => {
     commit('setKanjiExtraData', []);
-    commit('setOriginalList', []);
+    commit('setOriginalList', '');
     commit('setSortedList', []);
     commit('setUnsortedList', []);
     commit('setValue', { field: 'uniqueKanji', value: 0 });
-    commit('setValue', { field: 'output', value: '' });
   },
-  changeView({ state, dispatch, commit }: any, value: 'default' | 'kanjionly') {
+  changeView({ commit }: any, value: 'default' | 'kanjionly') {
     commit('setValue', { field: 'view', value });
-
-    if (state.update) dispatch('updateOutput');
   },
   changeSortType({ state, dispatch, commit }: any, value: SortType) {
     commit('setValue', { field: 'sortType', value });
-
-    if (state.update) {
-      dispatch('sortWorkingList');
-    }
+    if (state.update) dispatch('sortWorkingList');
   },
   changeFilterType({ state, dispatch, commit }: any, value: FilterType) {
     commit('setValue', { field: 'filterType', value });
-
-    if (state.update) {
-      dispatch('sortWorkingList');
-      dispatch('updateOutput');
-    }
+    if (state.update) dispatch('sortWorkingList');
   },
   changeRepeats({ state, dispatch, commit }: any, value: boolean) {
     commit('setValue', { field: 'repeats', value });
-
-    if (state.update) {
-      dispatch('sortWorkingList');
-      dispatch('updateOutput');
-    }
+    if (state.update) dispatch('sortWorkingList');
   },
-  changeReversed({ state, dispatch, commit }: any, value: boolean) {
+  changeReversed({ commit }: any, value: boolean) {
     commit('setValue', { field: 'reversed', value });
-
-    if (state.update) dispatch('updateOutput');
   },
 };
 

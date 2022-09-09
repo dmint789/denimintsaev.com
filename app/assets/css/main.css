@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+th,
+td {
+  @apply text-center border-mygray-600;
+}
+th {
+  @apply border-b-2;
+}
+th:not(:last-child),
+td:not(:last-child) {
+  @apply border-r-2;
+}
