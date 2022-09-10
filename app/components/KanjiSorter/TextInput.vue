@@ -13,6 +13,7 @@
       name="inputtext"
       placeholder="Enter text here"
       v-model="inputBox"
+      @change="onUpdateInput"
       class="w-full h-80 max-h-80 my-4 px-3 py-2 text-2xl items-start border-2 border-black hover:bg-mygray-50"
     ></textarea>
     <div class="grid grid-cols-4 gap-4 justify-around">
@@ -70,23 +71,30 @@
     data() {
       return {
         inputBox: '',
+        isInputNew: true,
       };
     },
     computed: {
       ...mapGetters(['getMode']),
     },
     methods: {
+      onUpdateInput() {
+        this.isInputNew = true;
+      },
       onClickAbout() {
         console.log('About');
       },
       onGetKanji() {
-        if (this.inputBox) {
+        if (this.inputBox && (this.getMode === 'add' || this.isInputNew)) {
           this.enterInput(this.inputBox);
+
+          if (this.getMode === 'replace') this.isInputNew = false;
         }
       },
       onGetNewKanji() {},
       onClear() {
         this.inputBox = '';
+        this.isInputNew = true;
       },
       onAddToList() {},
       onImportList() {},

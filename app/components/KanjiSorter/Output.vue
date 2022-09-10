@@ -9,7 +9,7 @@
           type="checkbox"
           id="update"
           name="update"
-          @change="(e) => setValue({ field: 'update', value: e.target.checked })"
+          @change="(e) => onChangeUpdate(e.target.checked)"
           :checked="getUpdate()"
           class="w-5 h-5"
         />
@@ -17,25 +17,34 @@
     </div>
     <div class="w-full h-80 mt-4 px-2 py-1 text-xl border-2 border-black">
       <div v-if="getView() === 'default'" class="w-full h-full pr-2 overflow-auto">
-        <table class="w-full table-auto">
-          <tr>
-            <th>#</th>
-            <th>Kanji</th>
-            <th>Occurrences</th>
-            <th>Newspaper Rank</th>
-            <th>Novel Rank</th>
-            <th>Strokes</th>
-            <th>JLPT</th>
-            <th>Jōyō</th>
-          </tr>
-          <KanjiRow v-for="(k, index) in getSorted()" :key="index" :kanji="k" />
+        <table class="relative w-full table-auto">
+          <thead class="sticky box-border top-0 py-4 border-b-2 border-mygray-500 bg-white">
+            <tr class="table-headings py-4 bg-white">
+              <th>#</th>
+              <th>Kanji</th>
+              <th>Occurrences</th>
+              <th>Newspaper Rank</th>
+              <th>Novel Rank</th>
+              <th>Strokes</th>
+              <th>JLPT</th>
+              <th>Jōyō</th>
+            </tr>
+          </thead>
+          <tbody>
+            <KanjiRow v-for="(k, index) in getSorted()" :key="index + 1" :kanji="k" />
+            <tr v-if="getUnsorted().length > 0">
+              <th colspan="8" class="py-2 border-t-2 border-b-2">Unsorted</th>
+            </tr>
+            <KanjiRow v-for="(k, index) in getUnsorted()" :key="-index - 1" :kanji="k" />
+          </tbody>
         </table>
       </div>
       <textarea
-        v-if="getView() === 'kanjionly'"
-        name="inputtext"
+        v-else
+        name="resulttext"
         placeholder="Result"
         :value="getKanjiOnly()"
+        disabled
         class="w-full h-full max-h-80 px-3 py-2 text-2xl items-start hover:bg-mygray-50"
       >
       </textarea>
@@ -152,6 +161,7 @@
     computed: {
       ...mapGetters([
         'getSorted',
+        'getUnsorted',
         'getUniqueKanji',
         'getTotalKanji',
         'getView',
@@ -164,18 +174,21 @@
       ]),
     },
     methods: {
+      onChangeUpdate(value: boolean) {
+        this.changeUpdate(value);
+      },
       onAddToList() {},
       onClear() {
         this.reset();
       },
 
-      ...mapMutations(['setValue']),
       ...mapActions([
         'changeView',
         'changeSortType',
         'changeFilterType',
         'changeRepeats',
         'changeReversed',
+        'changeUpdate',
         'reset',
       ]),
     },

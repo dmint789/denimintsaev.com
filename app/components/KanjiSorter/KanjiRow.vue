@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr class="table-data">
     <td>{{ kanji.index !== 0 ? kanji.index : '' }}</td>
     <td>{{ kanji.c }}</td>
     <td>{{ kanji.occurrences }}</td>
