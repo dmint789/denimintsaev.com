@@ -1,5 +1,5 @@
 <template>
-  <tr class="table-data">
+  <tr v-if="show" class="table-data">
     <td>{{ kanji.index !== 0 ? kanji.index : '' }}</td>
     <td>{{ kanji.c }}</td>
     <td>{{ kanji.occurrences }}</td>
@@ -21,6 +21,15 @@
       kanji: {
         type: Object as () => IKanjiExt,
         required: true,
+      },
+      repeats: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    computed: {
+      show() {
+        return this.kanji.filtered && (this.kanji.index !== 0 || this.repeats);
       },
     },
   });

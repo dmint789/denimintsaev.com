@@ -31,7 +31,12 @@
             </tr>
           </thead>
           <tbody>
-            <KanjiRow v-for="(k, index) in getSorted()" :key="index + 1" :kanji="k" />
+            <KanjiRow
+              v-for="(k, index) in getSorted()"
+              :key="index + 1"
+              :kanji="k"
+              :repeats="getRepeats()"
+            />
             <tr v-if="getUnsorted().length > 0">
               <th colspan="8" class="py-2 border-t-2 border-b-2">Unsorted</th>
             </tr>

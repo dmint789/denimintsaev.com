@@ -1,5 +1,6 @@
 import { IKanji } from '~/helpers/interfaces/kanji';
 import { SortType } from '~/helpers/enums/sortType';
+import { FilterType } from '~/helpers/enums/filterType';
 
 export function listContainsKanji(list: Array<IKanji>, kanji: IKanji): boolean {
   for (let i of list) {
@@ -53,6 +54,31 @@ export function isSortable(kanji: IKanji, sortType: SortType): boolean {
       return !!kanji.n;
     default:
       throw `Unable to check sortability for kanji; sort type: ${sortType}`;
+  }
+}
+
+export function isInFilter(kanji: IKanji, filterType: FilterType): boolean {
+  switch (filterType) {
+    case FilterType.None:
+      return true;
+    case FilterType.Joyo:
+      return kanji.y === 1;
+    case FilterType.N5:
+      return kanji.n === 5;
+    case FilterType.N4:
+      return kanji.n === 4;
+    case FilterType.N3:
+      return kanji.n === 3;
+    case FilterType.N2:
+      return kanji.n === 2;
+    case FilterType.N1:
+      return kanji.n === 1;
+    case FilterType.List:
+      return false;
+    case FilterType.Input:
+      return false;
+    default:
+      throw `Unable to check if kanji passes filter; filter type: ${filterType}`;
   }
 }
 
