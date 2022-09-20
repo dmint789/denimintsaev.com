@@ -7,5 +7,4 @@ export enum FilterType {
   N2 = 'n2',
   N1 = 'n1',
   List = 'list',
-  Input = 'input',
 }

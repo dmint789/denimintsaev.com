@@ -39,7 +39,7 @@
             name="mode"
             id="replace"
             value="replace"
-            @change="(e) => setValue({ field: 'mode', value: e.target.value })"
+            @change="(e) => setMode(e.target.value)"
             :checked="getMode() === 'replace'"
             class="w-5 h-5 ml-2"
           />
@@ -51,7 +51,7 @@
             name="mode"
             id="add"
             value="add"
-            @change="(e) => setValue({ field: 'mode', value: e.target.value })"
+            @change="(e) => setMode(e.target.value)"
             :checked="getMode() === 'add'"
             class="w-5 h-5 ml-2"
           />
@@ -67,7 +67,7 @@
   import { mapGetters, mapMutations, mapActions } from 'vuex';
 
   export default Vue.extend({
-    name: 'KanjiSorterTextInput',
+    name: 'TextInput',
     data() {
       return {
         inputBox: '',
@@ -99,7 +99,7 @@
       onAddToList() {},
       onImportList() {},
 
-      ...mapMutations(['setValue']),
+      ...mapMutations(['setMode']),
       ...mapActions(['enterInput']),
     },
   });

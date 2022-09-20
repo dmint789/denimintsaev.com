@@ -1,9 +1,10 @@
 <template>
   <div>
     <MyHeader :size="5">Kanji Sorter</MyHeader>
-    <div class="mx-auto w-full max-w-3xl">
+    <div class="mx-auto w-full max-w-4xl">
       <KanjiSorterTextInput />
       <KanjiSorterOutput />
+      <KanjiSorterList />
     </div>
   </div>
 </template>

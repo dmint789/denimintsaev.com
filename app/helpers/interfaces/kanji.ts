@@ -1,4 +1,5 @@
-export interface IKanji {
+// Interface representing a kanji as it's stored in the DB
+interface IKanjiDB {
   // Character
   c: string;
   // Stroke count
@@ -15,18 +16,18 @@ export interface IKanji {
   y: number;
 }
 
-// Extended kanji interface
-export interface IKanjiExt extends IKanji {
+// Interface for a kanji in the results
+export interface IKanji extends IKanjiDB {
+  // Number of occurrences in the text.
+  occurrences: number;
   // Index of the kanji for display. index = 0 means the kanji is a repeat (text order sort only).
   index: number;
-  // Number of occurrences in the text
-  occurrences: number;
-  // true = filtered (include the kanji in the list)
-  filtered: boolean;
-  // true = is in the input
-  inInput: boolean;
-  // true = is in the kanji list
-  // inList: boolean;
+}
+
+// Interface for a kanji in the list
+export interface IKanjiListEntry extends IKanjiDB {
+  // Date of when the kanji was added to the list
+  dateAdded: Date;
 }
 
 // Interface for the text order sort

@@ -75,8 +75,6 @@ export function isInFilter(kanji: IKanji, filterType: FilterType): boolean {
       return kanji.n === 1;
     case FilterType.List:
       return false;
-    case FilterType.Input:
-      return false;
     default:
       throw `Unable to check if kanji passes filter; filter type: ${filterType}`;
   }
