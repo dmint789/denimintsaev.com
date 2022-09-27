@@ -1,6 +1,6 @@
 <template>
   <tr v-if="show" class="table-data">
-    <td v-if="kanji.index !== undefined">{{ kanji.index !== 0 ? kanji.index : '' }}</td>
+    <td>{{ kanji.index > 0 ? kanji.index : '' }}</td>
     <td>{{ kanji.c }}</td>
     <td v-if="kanji.occurrences">{{ kanji.occurrences }}</td>
     <td>{{ kanji.p ? `#${kanji.p}` : 'N/A' }}</td>
@@ -22,7 +22,7 @@
         type: Object as () => IKanji | IKanjiListEntry,
         required: true,
       },
-      // Override that tells the component to be shown as long as the kanji passes the filter
+      // Override that shows the kanji as long as it passes the filter (even if it's a repeat)
       showAll: {
         type: Boolean,
         default: false,
@@ -30,7 +30,8 @@
     },
     computed: {
       show() {
-        return this.kanji.filtered && (this.kanji.index !== 0 || this.showAll);
+        // index = 0 means it's a repeat kanji, -1 means it's an unsorted kanji
+        return (this.kanji.filtered && (this.kanji.index !== 0 || this.showAll)) || this.kanji.index === -1;
       },
     },
   });

@@ -5,7 +5,7 @@
         <table class="relative w-full table-auto">
           <thead class="sticky box-border top-0 py-4 border-b-2 border-mygray-500 bg-white">
             <tr class="table-headings py-4 bg-white">
-              <th v-if="results">#</th>
+              <th>#</th>
               <th>Kanji</th>
               <th v-if="results">Occurrences</th>
               <th>Newspaper Rank</th>
@@ -15,42 +15,20 @@
               <th>Jōyō</th>
             </tr>
           </thead>
-          <tbody v-if="results">
-            <KanjiRow
-              v-for="(k, index) in getSorted()"
-              :key="index + 1"
-              :kanji="k"
-              :showAll="getRepeats()"
-            />
-            <tr v-if="getUnsorted().length > 0">
+          <tbody>
+            <KanjiRow v-for="(k, index) in getSorted(results)" :key="index + 1" :kanji="k" :showAll="getRepeats()" />
+            <tr v-if="getUnsorted(results).length > 0">
               <th colspan="8" class="py-2 border-t-2 border-b-2">Unsorted</th>
             </tr>
-            <KanjiRow v-for="(k, index) in getUnsorted()" :key="-index - 1" :kanji="k" />
-          </tbody>
-          <tbody v-else>
-            <KanjiRow
-              v-for="(k, index) in getKLDefault()"
-              :key="index"
-              :kanji="k"
-              :showAll="true"
-            />
+            <KanjiRow v-for="(k, index) in getUnsorted(results)" :key="-index - 1" :kanji="k" />
           </tbody>
         </table>
       </div>
       <textarea
-        v-else-if="results"
+        v-else
         name="resulttext"
         placeholder="Result"
-        :value="getKanjiOnly()"
-        disabled
-        class="w-full h-full max-h-80 px-3 py-2 text-2xl items-start hover:bg-mygray-50"
-      >
-      </textarea>
-      <textarea
-        v-else
-        name="kanjilisttext"
-        placeholder="Kanji list"
-        :value="getKLKanjiOnly()"
+        :value="getKanjiOnly(results)"
         disabled
         class="w-full h-full max-h-80 px-3 py-2 text-2xl items-start hover:bg-mygray-50"
       >
@@ -186,8 +164,6 @@
         'getSorted',
         'getUnsorted',
         'getKanjiOnly',
-        'getKLDefault',
-        'getKLKanjiOnly',
         'getSortType',
         'getRepeats',
         'getReversed',

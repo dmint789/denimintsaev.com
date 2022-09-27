@@ -18,14 +18,16 @@ interface IKanjiDB {
 
 // Interface for a kanji in the results
 export interface IKanji extends IKanjiDB {
-  // Number of occurrences in the text.
-  occurrences: number;
   // Index of the kanji for display. index = 0 means the kanji is a repeat (text order sort only).
   index: number;
+  // Number of occurrences in the text.
+  occurrences: number;
 }
 
 // Interface for a kanji in the list
 export interface IKanjiListEntry extends IKanjiDB {
+  // Index of the kanji for display. index = 0 means the kanji is a repeat (text order sort only).
+  index: number;
   // Date of when the kanji was added to the list
   dateAdded: Date;
 }

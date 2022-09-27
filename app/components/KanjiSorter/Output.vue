@@ -36,12 +36,14 @@
       onChangeUpdate(value: boolean) {
         this.changeUpdate(value);
       },
-      onAddToList() {},
+      onAddToList() {
+        this.addToList();
+      },
       onClear() {
         this.reset();
       },
 
-      ...mapActions(['changeUpdate', 'reset']),
+      ...mapActions(['changeUpdate', 'addToList', 'reset']),
     },
   });
 </script>

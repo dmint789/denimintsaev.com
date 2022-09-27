@@ -1,7 +1,7 @@
 <template>
   <div class="mt-6 mb-12">
     <div class="grid grid-cols-3 justify-between items-center">
-      <h2 class="text-2xl">Total kanji: 0</h2>
+      <h2 class="text-2xl">Total kanji: {{ getKanjiInList() }}</h2>
       <MyHeader :size="3" class="col-start-2">Kanji list</MyHeader>
     </div>
     <KanjiSorterDisplay :results="false" />
@@ -16,9 +16,13 @@
 
 <script lang="ts">
   import Vue from 'vue';
+  import { mapGetters } from 'vuex';
 
   export default Vue.extend({
     name: 'List',
+    computed: {
+      ...mapGetters(['getKanjiInList']),
+    },
     methods: {
       onLoad() {},
       onSave() {},
