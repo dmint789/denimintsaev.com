@@ -1,5 +1,5 @@
 // Interface representing a kanji as it's stored in the DB
-interface IKanjiDB {
+export interface IKanjiDB {
   // Character
   c: string;
   // Stroke count

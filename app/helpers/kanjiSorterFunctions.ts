@@ -16,7 +16,7 @@ export function getCompareFunc(kanjiData: Array<any>, sortType: SortType): (a: n
   switch (sortType) {
     case SortType.Occurrences:
       return (a: number, b: number): number => {
-        return kanjiData[b].occurrences - kanjiData[a].occurrences;
+        return kanjiData[b] - kanjiData[a];
       };
     case SortType.Newspapers:
       return (a: number, b: number): number => {
@@ -55,7 +55,7 @@ export function isSortable(kanji: IKanji, sortType: SortType): boolean {
 }
 
 // Returns true if the kanji passes the filter
-export function isInFilter(kanji: IKanji, filterType: FilterType, negative: boolean): boolean {
+export function isInFilter(kanji: IKanji, filterType: FilterType, negative: boolean, inList = false): boolean {
   let output: boolean;
 
   switch (filterType) {
@@ -80,7 +80,7 @@ export function isInFilter(kanji: IKanji, filterType: FilterType, negative: bool
       output = kanji.n === 1;
       break;
     case FilterType.List:
-      output = false;
+      output = inList;
       break;
     default:
       throw `Unable to check if kanji passes filter; filter type: ${filterType}`;
