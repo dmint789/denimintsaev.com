@@ -5,3 +5,6 @@
 node_modules
 # System files
 *.log
+
+# Development files
+app/.vscode
