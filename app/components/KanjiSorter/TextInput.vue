@@ -26,7 +26,7 @@
           </svg>
         </div>
       </div>
-      <MyButton black :onClick="onGetNewKanji" class="w-full">Get new kanji</MyButton>
+      <MyButton black :onClick="() => onGetKanji(true)" class="w-full">Get new kanji</MyButton>
       <MyButton black :onClick="onClear" class="w-full">Clear</MyButton>
       <MyButton black :onClick="onAddToList" class="w-full">Add to list</MyButton>
       <div
@@ -84,14 +84,13 @@
       onClickAbout() {
         console.log('About');
       },
-      onGetKanji() {
+      onGetKanji(newK = false) {
         if (this.inputBox && (this.getMode === 'add' || this.isInputNew)) {
-          this.enterInput(this.inputBox);
+          this.getKanji({ input: this.inputBox, newK });
 
           if (this.getMode === 'replace') this.isInputNew = false;
         }
       },
-      onGetNewKanji() {},
       onClear() {
         this.inputBox = '';
         this.isInputNew = true;
@@ -100,7 +99,7 @@
       onImportList() {},
 
       ...mapMutations(['setMode']),
-      ...mapActions(['enterInput']),
+      ...mapActions(['getKanji']),
     },
   });
 </script>

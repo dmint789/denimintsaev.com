@@ -14,6 +14,8 @@ export const state = () => ({
     sorted: [] as Array<IKanji>,
     // Filtered kanji that cannot be sorted (not covered by the sort type)
     unsorted: [] as Array<IKanji>,
+    // All filtered kanji without repeats to be used for adding to the kanji list
+    allFiltered: [] as Array<number>,
     // Final output for the kanji only view
     kanjiOnly: {} as IKanjiOnly,
   },
@@ -140,6 +142,7 @@ export const mutations = {
   setOriginal: (state: any, data: Array<number>) => (state.workingList.original = data),
   setSortedList: (state: any, data: Array<IKanji>) => (state.workingList.sorted = data),
   setUnsortedList: (state: any, data: Array<IKanji>) => (state.workingList.unsorted = data),
+  setAllFiltered: (state: any, data: Array<number>) => (state.workingList.allFiltered = data),
   setKanjiOnly: (state: any, data: IKanjiOnly) => (state.workingList.kanjiOnly = data),
   setUniqueKanji: (state: any, data: number) => (state.uniqueKanji = data),
   setTotalKanji: (state: any, data: number) => (state.totalKanji = data),
@@ -168,8 +171,8 @@ export const mutations = {
 };
 
 export const actions = {
-  enterInput({ dispatch }: any, input: string) {
-    dispatch('sortWorkingList', input);
+  getKanji({ dispatch }: any, { input, newK = false }: { input: string; newK: boolean }) {
+    dispatch('sortWorkingList', { input, newK });
   },
   addToList({ dispatch }: any) {
     dispatch('sortKanjiList', true);
@@ -177,14 +180,12 @@ export const actions = {
   sortKanjiList({ state, commit, dispatch }: any, add = false) {
     if (state.uniqueKanji > 0) {
       const input = (
-        add ? [...state.kanjiList.original, ...state.workingList.original] : state.kanjiList.original
+        add ? [...state.kanjiList.original, ...state.workingList.allFiltered] : state.kanjiList.original
       ) as Array<number>;
       const sortType = state.kanjiListSettings.sortType;
       const filterType = state.kanjiListSettings.filterType;
       const compareFunc = getCompareFunc(state.kanjiData, sortType);
 
-      let kanjiOccurrences = new Array<number>(state.kanjiData.length);
-      let tempOriginal = [] as Array<number>;
       let tempSorted = new KanjiLinkedList(null, compareFunc);
       let tempUnsorted = [] as Array<IKanjiListEntry>;
       let tempKanjiOnly = { sorted: '', unsorted: '' } as IKanjiOnly; // for the kanji only output
@@ -193,25 +194,16 @@ export const actions = {
       for (let i = 0; i < input.length; i++) {
         const id = input[i];
         let kanji = state.kanjiData[id];
+        tempList[id] = true;
 
-        if (kanjiOccurrences[id]) kanjiOccurrences[id]++;
-        else {
-          kanjiOccurrences[id] = 1;
-          tempList[id] = true;
-        }
-
-        if (kanjiOccurrences[id] === 1) {
-          tempOriginal.push(id);
-
-          if (isSortable(kanji, sortType)) {
-            tempSorted.addToList(id);
-          } else if (isInFilter(kanji, filterType, state.kanjiListSettings.negativeFilter)) {
-            tempUnsorted.push({
-              ...kanji,
-              index: -1,
-            });
-            tempKanjiOnly.unsorted += kanji.c;
-          }
+        if (isSortable(kanji, sortType)) {
+          tempSorted.addToList(id);
+        } else if (isInFilter(kanji, filterType, state.kanjiListSettings.negativeFilter)) {
+          tempUnsorted.push({
+            ...kanji,
+            index: -1,
+          });
+          tempKanjiOnly.unsorted += kanji.c;
         }
       }
 
@@ -237,18 +229,18 @@ export const actions = {
         pointer = pointer.next;
       }
 
-      commit('setKLOriginal', tempOriginal);
+      commit('setKLOriginal', input);
       commit('setKLSortedList', tempSortedKanji);
       commit('setKLUnsortedList', tempUnsorted);
       commit('setKLKanjiOnly', tempKanjiOnly);
       commit('setKanjiList', tempList);
-      commit('setKanjiInList', tempOriginal.length);
+      commit('setKanjiInList', input.length);
 
       if (state.resultsSettings.filterType === FilterType.List && getters.getUpdate) dispatch('sortWorkingList');
     }
   },
   // OPTIMIZE FILTERING WHEN NOTHING BUT THE FILTER HAS CHANGED?
-  sortWorkingList({ state, commit }: any, input = '') {
+  sortWorkingList({ state, commit }: any, { input, newK } = { input: '', newK: false }) {
     if (input || state.workingList.original.length > 0) {
       const sortType = state.resultsSettings.sortType;
       const filterType = state.resultsSettings.filterType;
@@ -258,6 +250,7 @@ export const actions = {
       let tempSorted: KanjiLinkedList; // for the default output
       let tempTextSorted: Array<IKanjiMin>;
       let tempUnsorted = [] as Array<IKanji>;
+      let tempAllFiltered = [] as Array<number>;
       let tempKanjiOnly = { sorted: '', unsorted: '' } as IKanjiOnly; // for the kanji only output
 
       // Initialize sorted list depending on the sort type
@@ -271,28 +264,31 @@ export const actions = {
       }
 
       const loop = (id: number) => {
-        let kanji = state.kanjiData[id];
-        tempOriginal.push(id);
+        if (!newK || !state.kanjiList.list[id]) {
+          let kanji = state.kanjiData[id];
+          tempOriginal.push(id);
 
-        if (kanjiOccurrences[id]) kanjiOccurrences[id]++;
-        else kanjiOccurrences[id] = 1;
+          if (kanjiOccurrences[id]) kanjiOccurrences[id]++;
+          else kanjiOccurrences[id] = 1;
 
-        if (sortType === SortType.TextOrder) {
-          if (kanjiOccurrences[id] === 1) tempTextSorted.push({ i: id, repeat: false });
-          else tempTextSorted.push({ i: id, repeat: true });
-        } else if (sortType === SortType.Occurrences) {
-          if (kanjiOccurrences[id] > 1) tempSorted.repositionInList(id);
-          else tempSorted.addToList(id);
-        } else if (kanjiOccurrences[id] === 1) {
-          if (isSortable(kanji, sortType)) {
-            tempSorted.addToList(id);
-          } else if (isInFilter(kanji, filterType, state.resultsSettings.negativeFilter, state.kanjiList.list[id])) {
-            tempUnsorted.push({
-              ...kanji,
-              occurrences: kanjiOccurrences[id],
-              index: -1,
-            });
-            tempKanjiOnly.unsorted += kanji.c;
+          if (sortType === SortType.TextOrder) {
+            if (kanjiOccurrences[id] === 1) tempTextSorted.push({ i: id, repeat: false });
+            else tempTextSorted.push({ i: id, repeat: true });
+          } else if (sortType === SortType.Occurrences) {
+            if (kanjiOccurrences[id] > 1) tempSorted.repositionInList(id);
+            else tempSorted.addToList(id);
+          } else if (kanjiOccurrences[id] === 1) {
+            if (isSortable(kanji, sortType)) {
+              tempSorted.addToList(id);
+            } else if (isInFilter(kanji, filterType, state.resultsSettings.negativeFilter, state.kanjiList.list[id])) {
+              tempUnsorted.push({
+                ...kanji,
+                occurrences: kanjiOccurrences[id],
+                index: -1,
+              });
+              tempKanjiOnly.unsorted += kanji.c;
+              tempAllFiltered.push(id);
+            }
           }
         }
       };
@@ -316,7 +312,10 @@ export const actions = {
         let fullKanji = state.kanjiData[kanjiId];
 
         if (isInFilter(fullKanji, filterType, state.resultsSettings.negativeFilter, state.kanjiList.list[kanjiId])) {
-          if (!repeat) tempUniqueKanji++;
+          if (!repeat) {
+            tempUniqueKanji++;
+            tempAllFiltered.push(kanjiId);
+          }
 
           tempSortedKanji.push({
             ...fullKanji,
@@ -345,6 +344,7 @@ export const actions = {
       commit('setOriginal', tempOriginal);
       commit('setSortedList', tempSortedKanji);
       commit('setUnsortedList', tempUnsorted);
+      commit('setAllFiltered', tempAllFiltered);
       commit('setKanjiOnly', tempKanjiOnly);
       commit('setUniqueKanji', tempUniqueKanji);
       commit('setTotalKanji', tempOriginal.length);
