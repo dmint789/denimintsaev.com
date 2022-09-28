@@ -11,16 +11,18 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapMutations } from 'vuex';
+  import { mapMutations, mapActions } from 'vuex';
 
   export default Vue.extend({
     name: 'KanjiSorter',
     async created() {
       const data = await this.$axios.$get('http://localhost:3000/kanjiData.json');
       this.setKanjiData(data);
+      this.loadKanjiList();
     },
     methods: {
       ...mapMutations(['setKanjiData']),
+      ...mapActions(['loadKanjiList']),
     },
   });
 </script>

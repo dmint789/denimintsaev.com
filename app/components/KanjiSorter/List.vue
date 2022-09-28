@@ -6,9 +6,9 @@
     </div>
     <KanjiSorterDisplay :results="false" />
     <div class="grid grid-cols-4 gap-4 justify-around">
-      <MyButton black :onClick="onLoad" class="w-full">Load</MyButton>
-      <MyButton black :onClick="onSave" class="w-full">Save</MyButton>
-      <MyButton black :onClick="onDeleteSave" class="w-full">Delete save</MyButton>
+      <MyButton black :onClick="onLoad" disabled class="w-full">Load</MyButton>
+      <MyButton black :onClick="onSave" disabled class="w-full">Save</MyButton>
+      <MyButton black :onClick="onDeleteSave" disabled class="w-full">Delete save</MyButton>
       <MyButton black :onClick="onClear" class="w-full">Clear</MyButton>
     </div>
   </div>
@@ -16,7 +16,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
 
   export default Vue.extend({
     name: 'List',
@@ -27,7 +27,11 @@
       onLoad() {},
       onSave() {},
       onDeleteSave() {},
-      onClear() {},
+      onClear() {
+        this.clearKanjiList();
+      },
+
+      ...mapActions(['clearKanjiList']),
     },
   });
 </script>

@@ -1,8 +1,9 @@
 <template>
   <button
     class="w-40 h-14 box-content text-xl transition-all"
-    :class="black ? 'black' : 'white'"
+    :class="disabled ? 'disabled' : black ? 'black' : 'white'"
     @click="handleClick"
+    :disabled="disabled"
   >
     <slot />
   </button>
@@ -14,6 +15,10 @@
   export default Vue.extend({
     name: 'MyButton',
     props: {
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
       black: {
         type: Boolean,
         default: false,
@@ -44,5 +49,8 @@
   }
   .black {
     @apply text-white bg-black border border-white hover:text-black hover:bg-white hover:border-black;
+  }
+  .disabled {
+    @apply text-white bg-mygray-500 border border-white;
   }
 </style>

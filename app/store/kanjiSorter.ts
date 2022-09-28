@@ -8,7 +8,7 @@ export const state = () => ({
   // Data for all kanji
   kanjiData: [] as Array<IKanjiDB>,
   workingList: {
-    // Original list of kanji indices (INCLUDING repeats)
+    // Original list of kanji indices (INCLUDING repeats and ignoring the filter)
     original: [] as Array<number>,
     // List of sorted and filtered kanji
     sorted: [] as Array<IKanji>,
@@ -44,7 +44,6 @@ export const state = () => ({
     // Array with the length of the kanji DB. Each item says whether or not the kanji is in the list.
     list: [] as Array<boolean>,
   },
-  kanjiInList: 0,
   kanjiListSettings: {
     view: 'default' as 'default' | 'kanjionly',
     reversed: false,
@@ -100,7 +99,7 @@ export const getters = {
     },
   getUniqueKanji: (state: any) => (): number => state.uniqueKanji,
   getTotalKanji: (state: any) => (): number => state.totalKanji,
-  getKanjiInList: (state: any) => (): number => state.kanjiInList,
+  getKanjiInList: (state: any) => (): number => state.kanjiList.original.length,
   getMode: (state: any) => (): 'replace' | 'add' => state.mode,
   // Settings getters
   getView:
@@ -153,7 +152,6 @@ export const mutations = {
   setKLUnsortedList: (state: any, data: Array<IKanjiListEntry>) => (state.kanjiList.unsorted = data),
   setKLKanjiOnly: (state: any, data: IKanjiOnly) => (state.kanjiList.kanjiOnly = data),
   setKanjiList: (state: any, data: Array<Boolean>) => (state.kanjiList.list = data),
-  setKanjiInList: (state: any, data: number) => (state.kanjiInList = data),
   // Results settings setters
   setView: (state: any, data: 'default' | 'kanjionly') => (state.resultsSettings.view = data),
   setSortType: (state: any, data: SortType) => (state.resultsSettings.sortType = data),
@@ -171,6 +169,17 @@ export const mutations = {
 };
 
 export const actions = {
+  loadKanjiList({ commit }: any) {
+    if (process.client) {
+      const kanjiList = JSON.parse(localStorage.getItem('kanji-list'));
+
+      commit('setKLOriginal', kanjiList.original);
+      commit('setKLSortedList', kanjiList.sorted);
+      commit('setKLUnsortedList', kanjiList.unsorted);
+      commit('setKLKanjiOnly', kanjiList.kanjiOnly);
+      commit('setKanjiList', kanjiList.list);
+    }
+  },
   getKanji({ dispatch }: any, { input, newK = false }: { input: string; newK: boolean }) {
     dispatch('sortWorkingList', { input, newK });
   },
@@ -234,12 +243,14 @@ export const actions = {
       commit('setKLUnsortedList', tempUnsorted);
       commit('setKLKanjiOnly', tempKanjiOnly);
       commit('setKanjiList', tempList);
-      commit('setKanjiInList', input.length);
 
       if (state.resultsSettings.filterType === FilterType.List && getters.getUpdate) dispatch('sortWorkingList');
+
+      // Save list to local storage
+      if (process.client) localStorage.setItem('kanji-list', JSON.stringify(state.kanjiList));
     }
   },
-  // OPTIMIZE FILTERING WHEN NOTHING BUT THE FILTER HAS CHANGED?
+  // OPTIMIZE FILTERING WHEN NOTHING BUT THE FILTER HAS CHANGED
   sortWorkingList({ state, commit }: any, { input, newK } = { input: '', newK: false }) {
     if (input || state.workingList.original.length > 0) {
       const sortType = state.resultsSettings.sortType;
@@ -357,6 +368,15 @@ export const actions = {
     commit('setKanjiOnly', {});
     commit('setUniqueKanji', 0);
     commit('setTotalKanji', 0);
+  },
+  clearKanjiList: ({ state, commit }: any) => {
+    commit('setKLOriginal', []);
+    commit('setKLSortedList', []);
+    commit('setKLUnsortedList', []);
+    commit('setKLKanjiOnly', {});
+    commit('setKanjiList', []);
+
+    if (process.client) localStorage.setItem('kanji-list', JSON.stringify(state.kanjiList));
   },
   changeView({ commit }: any, { results, value }: { results: boolean; value: 'default' | 'kanjionly' }) {
     if (results) commit('setView', value);
