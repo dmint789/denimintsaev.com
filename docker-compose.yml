@@ -1,0 +1,56 @@
+version: '3'
+services:
+  mongo:
+    container_name: dm-mongo
+    image: mongo
+    networks:
+      - denimintsaev
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/data/db:rw
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=denimintsaev123
+      - MONGO_INITDB_DATABASE=denimintsaev
+    restart: unless-stopped
+  mongo-express:
+    container_name: dm-mongo-express
+    image: mongo-express
+    networks:
+      - denimintsaev
+    ports:
+      - 8080:8081
+    environment: 
+      - ME_CONFIG_MONGODB_SERVER=dm-mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=mongoadmin
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=denimintsaev123
+      - ME_CONFIG_BASICAUTH_USERNAME=user
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    depends_on:
+      - mongo
+    restart: unless-stopped
+  dm-server:
+    container_name: denimintsaev
+    image: denimintsaev:0.0.1
+    build: .
+    networks:
+      - denimintsaev
+    ports:
+      # Map host's port (left) to container's port (right)
+      - "3000:3000"
+    environment: 
+      - NUXT_PORT=3000
+      - MONGODB_URI=mongodb://mongoadmin:denimintsaev123@dm-mongo:27017
+    depends_on:
+      - mongo
+    restart: unless-stopped
+networks:
+  denimintsaev:
+volumes:
+  db-data:
+    # Tells docker to create the storage for the volume on the local file system
+    driver: local

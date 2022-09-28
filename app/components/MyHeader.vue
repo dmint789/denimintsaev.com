@@ -1,6 +1,6 @@
 <template>
   <div class="w-full text-center" :class="`p-${size}`">
-    <h1 :class="[textSize, white ? 'text-white' : 'text-black']">
+    <h1 :class="getClasses">
       <slot />
     </h1>
   </div>
@@ -12,9 +12,9 @@
   export default Vue.extend({
     name: 'MyHeader',
     props: {
-      white: {
+      black: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       size: {
         type: Number,
@@ -22,13 +22,16 @@
       },
     },
     computed: {
-      textSize(): String {
-        switch (this.size) {
-          case 1:
-            return 'text-xl';
-          default:
-            return `text-${this.size}xl`;
-        }
+      getClasses(): string {
+        let classes: string;
+
+        if (this.size === 1) classes = 'text-xl';
+        else classes = `text-${this.size}xl`;
+
+        if (this.black) classes += ' text-black';
+        else classes += ' text-white';
+
+        return classes;
       },
     },
   });

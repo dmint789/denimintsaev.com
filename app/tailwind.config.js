@@ -27,4 +27,23 @@ module.exports = {
   },
   css: ['~/assets/css/main.css', '~/assets/css/kanjiSorter.css'],
   plugins: [],
+  purge: {
+    enabled: true,
+    options: {
+      safelist: [
+        'p-1',
+        'p-2',
+        'p-3',
+        'p-4',
+        'p-5',
+        'text-xl',
+        'text-2xl',
+        'text-3xl',
+        'text-4xl',
+        'text-5xl',
+        'text-black',
+        'text-white',
+      ],
+    },
+  },
 };
