@@ -12,10 +12,7 @@ export function listContainsKanji(list: Array<IKanji>, kanji: IKanji): boolean {
 
 // Gets the appropriate compare function according to the given sort type
 // < 0 means a goes before b, > 0 means a goes after b, 0 means they are the same
-export function getCompareFunc(
-  kanjiData: Array<any>,
-  sortType: SortType
-): (a: number, b: number) => number {
+export function getCompareFunc(kanjiData: Array<any>, sortType: SortType): (a: number, b: number) => number {
   switch (sortType) {
     case SortType.Occurrences:
       return (a: number, b: number): number => {
@@ -57,27 +54,40 @@ export function isSortable(kanji: IKanji, sortType: SortType): boolean {
   }
 }
 
-export function isInFilter(kanji: IKanji, filterType: FilterType): boolean {
+// Returns true if the kanji passes the filter
+export function isInFilter(kanji: IKanji, filterType: FilterType, negative: boolean): boolean {
+  let output: boolean;
+
   switch (filterType) {
     case FilterType.None:
       return true;
     case FilterType.Joyo:
-      return kanji.y === 1;
+      output = kanji.y === 1;
+      break;
     case FilterType.N5:
-      return kanji.n === 5;
+      output = kanji.n === 5;
+      break;
     case FilterType.N4:
-      return kanji.n === 4;
+      output = kanji.n === 4;
+      break;
     case FilterType.N3:
-      return kanji.n === 3;
+      output = kanji.n === 3;
+      break;
     case FilterType.N2:
-      return kanji.n === 2;
+      output = kanji.n === 2;
+      break;
     case FilterType.N1:
-      return kanji.n === 1;
+      output = kanji.n === 1;
+      break;
     case FilterType.List:
-      return false;
+      output = false;
+      break;
     default:
       throw `Unable to check if kanji passes filter; filter type: ${filterType}`;
   }
+
+  output = negative ? !output : output;
+  return output;
 }
 
 // Returns the hash id for the input character if it is a kanji.

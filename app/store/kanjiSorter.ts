@@ -202,14 +202,14 @@ export const actions = {
             tempUnsorted.push({
               ...kanji,
               index: -1,
-              filtered: isInFilter(kanji, filterType),
+              filtered: isInFilter(kanji, filterType, state.kanjiListSettings.negativeFilter),
             });
             tempKanjiOnly.unsorted += kanji.c;
           }
         }
       }
 
-      // Save the sorted list into an array ready for display
+      // Save the sorted list into an array ready for display while filtering it and assigning indices
       let tempSortedKanji = new Array<IKanjiListEntry>(tempSorted.length);
       let pointer = tempSorted.head as ListNode<number>;
       let index = 0;
@@ -218,7 +218,7 @@ export const actions = {
         if (!pointer) break;
 
         let fullKanji = state.kanjiData[pointer.data];
-        let inFilter = isInFilter(fullKanji, filterType) as boolean;
+        let inFilter = isInFilter(fullKanji, filterType, state.kanjiListSettings.negativeFilter) as boolean;
 
         if (inFilter) index++;
 
@@ -283,7 +283,7 @@ export const actions = {
               ...kanji,
               occurrences: kanjiExtraData[id].occurrences,
               index: -1,
-              filtered: isInFilter(kanji, filterType),
+              filtered: isInFilter(kanji, filterType, state.resultsSettings.negativeFilter),
             });
             tempKanjiOnly.unsorted += kanji.c;
           }
@@ -301,13 +301,13 @@ export const actions = {
         if (id !== null) loop(id);
       }
 
-      // Save the sorted list into an array ready for display
+      // Save the sorted list into an array ready for display while filtering it and assigning indices
       let tempSortedKanji: Array<IKanji>;
       let tempUniqueKanji = 0;
 
       const setNextKanji = (i: number, kanjiId: number, repeat: boolean) => {
         let fullKanji = state.kanjiData[kanjiId];
-        let inFilter = isInFilter(fullKanji, filterType) as boolean;
+        let inFilter = isInFilter(fullKanji, filterType, state.resultsSettings.negativeFilter) as boolean;
 
         if (inFilter && !repeat) tempUniqueKanji++;
 
