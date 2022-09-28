@@ -177,6 +177,7 @@ export const actions = {
         add ? [...state.kanjiList.original, ...state.workingList.original] : state.kanjiList.original
       ) as Array<number>;
       const sortType = state.kanjiListSettings.sortType;
+      const filterType = state.kanjiListSettings.filterType;
       const compareFunc = getCompareFunc(state.kanjiData, sortType);
 
       let kanjiExtraData = new Array<IKanji>(state.kanjiData.length);
@@ -201,6 +202,7 @@ export const actions = {
             tempUnsorted.push({
               ...kanji,
               index: -1,
+              filtered: isInFilter(kanji, filterType),
             });
             tempKanjiOnly.unsorted += kanji.c;
           }
@@ -216,7 +218,7 @@ export const actions = {
         if (!pointer) break;
 
         let fullKanji = state.kanjiData[pointer.data];
-        let inFilter = isInFilter(fullKanji, state.kanjiListSettings.filterType) as boolean;
+        let inFilter = isInFilter(fullKanji, filterType) as boolean;
 
         if (inFilter) index++;
 
@@ -230,19 +232,18 @@ export const actions = {
         pointer = pointer.next;
       }
 
-      console.log(tempSortedKanji);
-
       commit('setKLOriginal', tempOriginal);
       commit('setKLSortedList', tempSortedKanji);
       commit('setKLUnsortedList', tempUnsorted);
       commit('setKLKanjiOnly', tempKanjiOnly);
-      commit('setKanjiInList', index + tempUnsorted.length);
+      commit('setKanjiInList', tempOriginal.length);
     }
   },
   // OPTIMIZE FILTERING WHEN NOTHING BUT THE FILTER HAS CHANGED?
   sortWorkingList({ state, commit }: any, input = '') {
     if (input || state.workingList.original.length > 0) {
       const sortType = state.resultsSettings.sortType;
+      const filterType = state.resultsSettings.filterType;
 
       let kanjiExtraData = new Array<IKanji>(state.kanjiData.length);
       let tempOriginal = [] as Array<number>;
@@ -282,6 +283,7 @@ export const actions = {
               ...kanji,
               occurrences: kanjiExtraData[id].occurrences,
               index: -1,
+              filtered: isInFilter(kanji, filterType),
             });
             tempKanjiOnly.unsorted += kanji.c;
           }
@@ -302,16 +304,12 @@ export const actions = {
       // Save the sorted list into an array ready for display
       let tempSortedKanji: Array<IKanji>;
       let tempUniqueKanji = 0;
-      let tempTotalKanji = 0;
 
       const setNextKanji = (i: number, kanjiId: number, repeat: boolean) => {
         let fullKanji = state.kanjiData[kanjiId];
-        let inFilter = isInFilter(fullKanji, state.resultsSettings.filterType) as boolean;
+        let inFilter = isInFilter(fullKanji, filterType) as boolean;
 
-        if (inFilter) {
-          tempTotalKanji++;
-          if (!repeat) tempUniqueKanji++;
-        }
+        if (inFilter && !repeat) tempUniqueKanji++;
 
         tempSortedKanji[i] = {
           ...fullKanji,
@@ -337,12 +335,15 @@ export const actions = {
         }
       }
 
+      // Add unsorted kanji to the unique kanji total (unsorted kanji can't have repeats anyways)
+      tempUniqueKanji += tempUnsorted.length;
+
       commit('setOriginal', tempOriginal);
       commit('setSortedList', tempSortedKanji);
       commit('setUnsortedList', tempUnsorted);
       commit('setKanjiOnly', tempKanjiOnly);
       commit('setUniqueKanji', tempUniqueKanji);
-      commit('setTotalKanji', tempTotalKanji);
+      commit('setTotalKanji', tempOriginal.length);
     }
   },
   reset: ({ commit }: any) => {

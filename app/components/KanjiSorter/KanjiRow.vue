@@ -31,7 +31,7 @@
     computed: {
       show() {
         // index = 0 means it's a repeat kanji, -1 means it's an unsorted kanji
-        return (this.kanji.filtered && (this.kanji.index !== 0 || this.showAll)) || this.kanji.index === -1;
+        return this.kanji.filtered && (this.kanji.index !== 0 || this.showAll);
       },
     },
   });
