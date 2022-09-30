@@ -6,6 +6,7 @@ source ./.env
 # Display commands being executed on the screen
 set -x
 
-# Restart docker containers while rebuilding the server image
+# Restart docker containers and load the server image from file
 docker-compose down &&
-docker-compose up -d --build
+docker load --input denimintsaev.tar &&
+docker-compose up -d

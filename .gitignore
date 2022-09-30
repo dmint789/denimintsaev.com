@@ -8,6 +8,7 @@ node_modules
 
 # Production files
 .env
+denimintsaev.tar
 
 # Development files
 app/.vscode
