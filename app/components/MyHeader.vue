@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full text-center" :class="`p-${size}`">
+  <div :class="(nocenter ? '' : 'w-full text-center ') + `p-${size}`">
     <h1 :class="getClasses">
       <slot />
     </h1>
@@ -12,13 +12,17 @@
   export default Vue.extend({
     name: 'MyHeader',
     props: {
-      black: {
+      nocenter: {
         type: Boolean,
-        default: true,
+        default: false,
       },
       size: {
         type: Number,
         default: 3,
+      },
+      black: {
+        type: Boolean,
+        default: true,
       },
     },
     computed: {

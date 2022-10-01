@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="mt-4 grid grid-cols-3 items-center">
-      <MyHeader :size="3" class="col-start-2">Enter Text</MyHeader>
+    <div class="mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
+      <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
         <MyButton black :onClick="onClickAbout" disabled>About</MyButton>
-        <NuxtLink to="/patreon" class="h-full">
+        <NuxtLink to="/patreon" class="flex-shrink-0 h-full">
           <img src="../../static/patreon_logo.png" alt="Patreon Logo" class="h-full" />
         </NuxtLink>
       </div>

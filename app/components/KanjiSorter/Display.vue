@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="w-full h-80 mt-4 px-2 py-1 text-xl border-2 border-black">
+    <div class="w-full h-80 mt-2 px-2 py-1 text-xl border-2 border-black">
       <div v-if="getView(results) === 'default'" class="w-full h-full pr-2 overflow-auto">
         <table class="relative w-full table-auto">
           <thead class="sticky box-border top-0 py-4 border-b-2 border-mygray-500 bg-white">
@@ -34,8 +34,8 @@
       >
       </textarea>
     </div>
-    <div class="mb-4 grid grid-cols-5">
-      <div class="text-xl">
+    <div class="mb-4 flex items-start">
+      <div class="mr-1 flex-1 text-xl">
         <MyHeader :size="2">View</MyHeader>
         <div class="mx-auto mt-2 w-max">
           <div class="flex items-center mb-2">
@@ -64,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div class="col-span-2 px-4">
+      <div class="dropdown-container">
         <MyHeader :size="2">Sort type</MyHeader>
         <select
           :name="prefix('sorttype')"
@@ -81,7 +81,7 @@
           <option value="jlpt">JLPT</option>
         </select>
       </div>
-      <div class="col-span-2">
+      <div class="dropdown-container">
         <MyHeader :size="2">Filter</MyHeader>
         <select
           :name="prefix('filter')"
@@ -101,8 +101,8 @@
         </select>
       </div>
     </div>
-    <div class="mb-6 grid gap-4" :class="results ? 'grid-cols-3' : 'grid-cols-2'">
-      <div v-if="results" class="flex items-center gap-3">
+    <div class="mb-6 flex justify-around items-center gap-4">
+      <div v-if="results" class="cb-and-label">
         <input
           type="checkbox"
           :id="prefix('repeats')"
@@ -119,7 +119,7 @@
           >Show repeats</label
         >
       </div>
-      <div class="ml-4 flex items-center gap-3">
+      <div class="cb-and-label">
         <input
           type="checkbox"
           :id="prefix('reversed')"
@@ -130,7 +130,7 @@
         />
         <label :for="prefix('reversed')" class="text-2xl">Reversed</label>
       </div>
-      <div class="ml-4 flex items-center gap-3">
+      <div class="cb-and-label">
         <input
           type="checkbox"
           :id="prefix('negativefilter')"
@@ -188,4 +188,10 @@
   });
 </script>
 
-<style lang="postcss" scoped></style>
+<style lang="postcss" scoped>
+  .dropdown-container {
+    @apply pl-3;
+
+    flex: 2;
+  }
+</style>

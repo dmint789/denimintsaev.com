@@ -1,10 +1,9 @@
 <template>
   <div class="mt-6">
-    <div class="grid grid-cols-3 justify-between items-center">
-      <h2 class="text-2xl">Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</h2>
-      <MyHeader :size="3" class="col-start-2">Result</MyHeader>
-      <div class="flex justify-end items-center gap-3">
-        <label for="update" class="text-2xl">Update</label>
+    <MyHeader :size="3">Result</MyHeader>
+    <div class="p-2 flex justify-between items-center text-2xl">
+      <div class="cb-and-label">
+        <label for="update">Update</label>
         <input
           type="checkbox"
           id="update"
@@ -14,6 +13,7 @@
           class="w-5 h-5"
         />
       </div>
+      <h2>Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</h2>
     </div>
     <KanjiSorterDisplay :results="true" />
     <div class="mb-4 grid grid-cols-2 gap-4">

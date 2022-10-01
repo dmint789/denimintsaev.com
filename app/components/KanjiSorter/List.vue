@@ -1,8 +1,8 @@
 <template>
-  <div class="mt-6 mb-12">
-    <div class="grid grid-cols-3 justify-between items-center">
+  <div class="mt-6 mb-6">
+    <div class="p-2 flex justify-end md:grid md:grid-cols-3 md:justify-between items-center">
+      <MyHeader nocenter :size="3" class="mx-auto">Kanji list</MyHeader>
       <h2 class="text-2xl">Total kanji: {{ getKanjiInList() }}</h2>
-      <MyHeader :size="3" class="col-start-2">Kanji list</MyHeader>
     </div>
     <KanjiSorterDisplay :results="false" />
     <div class="grid grid-cols-4 gap-4 justify-around">

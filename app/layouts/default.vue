@@ -1,50 +1,25 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <nav
-      class="px-32 py-6 flex items-center justify-between flex-wrap bg-black"
-    >
-      <div class="flex items-center flex-shrink-0 text-white mr-8">
-        <span class="text-2xl font-semibold">Deni Mintsaev</span>
-      </div>
-      <div class="block lg:hidden">
-        <!-- This needs to be a hamburger icon -->
-        <button
-          class="flex items-center px-3 py-2 border rounded text-white border-white hover:text-gray-300 hover:border-gray-300"
-          @click="() => (menuOpen = !menuOpen)"
-        >
-          Menu
-        </button>
-      </div>
-      <div
-        class="w-full block flex-grow justify-end lg:flex lg:items-center lg:w-auto"
-        v-if="menuVisible"
-      >
-        <div class="text-lg">
-          <a
-            href="/"
-            class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-6"
-            >Home</a
+    <nav class="p-6 bg-black">
+      <div class="w-full max-w-5xl mx-auto flex flex-wrap justify-between items-center text-white">
+        <span class="flex-shrink-0 text-2xl font-semibold">Deni Mintsaev</span>
+        <div class="block lg:hidden">
+          <!-- This needs to be a hamburger icon -->
+          <button
+            class="flex items-center px-3 py-2 border rounded text-white border-white hover:text-gray-300 hover:border-gray-300"
+            @click="() => (menuOpen = !menuOpen)"
           >
-          <a
-            href="/projects"
-            class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-6"
-            >Projects</a
-          >
-          <a
-            href="/blog"
-            class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-6"
-            >Blog</a
-          >
-          <a
-            href="/patreon"
-            class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-6"
-            >Patreon</a
-          >
-          <a
-            href="/contact"
-            class="mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300"
-            >Contact</a
-          >
+            Menu
+          </button>
+        </div>
+        <div class="block w-full flex-grow justify-end lg:flex lg:items-center lg:w-auto" v-if="menuVisible">
+          <div class="text-lg">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/blog">Blog</a>
+            <a href="/patreon">Patreon</a>
+            <a href="/contact">Contact</a>
+          </div>
         </div>
       </div>
     </nav>
@@ -77,7 +52,7 @@
     },
     computed: {
       menuVisible(): boolean {
-        return this.menuOpen || this.width >= 1024;
+        return this.menuOpen || this.width >= 1024; // 1024px is lg
       },
     },
     methods: {
@@ -88,4 +63,11 @@
   });
 </script>
 
-<style lang="postcss" scoped></style>
+<style lang="postcss" scoped>
+  a {
+    @apply mt-4 lg:inline-block lg:mt-0 hover:text-gray-300;
+  }
+  a:not(:last-child) {
+    @apply mr-6;
+  }
+</style>
