@@ -173,11 +173,13 @@ export const actions = {
     if (process.client) {
       const kanjiList = JSON.parse(localStorage.getItem('kanji-list'));
 
-      commit('setKLOriginal', kanjiList.original);
-      commit('setKLSortedList', kanjiList.sorted);
-      commit('setKLUnsortedList', kanjiList.unsorted);
-      commit('setKLKanjiOnly', kanjiList.kanjiOnly);
-      commit('setKanjiList', kanjiList.list);
+      if (kanjiList) {
+        commit('setKLOriginal', kanjiList.original);
+        commit('setKLSortedList', kanjiList.sorted);
+        commit('setKLUnsortedList', kanjiList.unsorted);
+        commit('setKLKanjiOnly', kanjiList.kanjiOnly);
+        commit('setKanjiList', kanjiList.list);
+      }
     }
   },
   getKanji({ dispatch }: any, { input, newK = false }: { input: string; newK: boolean }) {
