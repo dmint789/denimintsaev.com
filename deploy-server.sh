@@ -115,6 +115,8 @@ passwd $MY_USERNAME &&
 echo -e "\nSetting up repo... (press ENTER)" && read &&
 cd /home/$MY_USERNAME &&
 git clone https://github.com/dmint789/denimintsaev.com.git &&
+echo -e "\nPlease import all of the environment variables... (press ENTER)" && read &&
+vim /home/$MY_USERNAME/denimintsaev.com/.env &&
 chown -vR $MY_USERNAME:$MY_USERNAME /home/$MY_USERNAME/denimintsaev.com &&
 
 echo -e "\nDeployment complete! Reboot? (y/n)" && read ANSWER
