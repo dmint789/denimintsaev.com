@@ -4,8 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.standard-page-div {
-  @apply w-full max-w-4xl mx-auto px-2;
+.paragraph {
+  @apply text-xl text-justify;
 }
 
 /* Checkbox with label container */

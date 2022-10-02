@@ -1,6 +1,5 @@
 {
   "name": "denimintsaev",
-  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "nodemon --watch server --exec 'nuxt'",

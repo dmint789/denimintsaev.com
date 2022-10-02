@@ -1,5 +1,5 @@
 <template>
-  <div :class="(nocenter ? '' : 'w-full text-center ') + `p-${size}`">
+  <div :class="(nocenter ? '' : 'w-full text-center ') + `pb-${size}`">
     <h1 :class="getClasses">
       <slot />
     </h1>
@@ -20,9 +20,9 @@
         type: Number,
         default: 3,
       },
-      black: {
+      white: {
         type: Boolean,
-        default: true,
+        default: false,
       },
     },
     computed: {
@@ -32,8 +32,8 @@
         if (this.size === 1) classes = 'text-xl';
         else classes = `text-${this.size}xl`;
 
-        if (this.black) classes += ' text-black';
-        else classes += ' text-white';
+        if (this.white) classes += ' text-white';
+        else classes += ' text-black';
 
         return classes;
       },

@@ -1,10 +1,12 @@
 <template>
-  <div class="flex flex-col items-center">
+  <PageSection>
     <MyHeader :size="5">Projects</MyHeader>
-    <div class="flex flex-col items-center gap-4">
+    <div class="mt-2 w-full flex flex-col items-center gap-4">
       <MyButton link="/kanjisorter">Kanji Sorter</MyButton>
+      <MyButton link="https://denthebro.itch.io/red-octagon">Red Octagon</MyButton>
+      <!-- <MyButton link="/pll_bingo.png">PLL Bingo</MyButton> -->
     </div>
-  </div>
+  </PageSection>
 </template>
 
 <script lang="ts">

@@ -1,10 +1,5 @@
 <template>
-  <button
-    class="w-40 h-14 box-content text-xl transition-all"
-    :class="disabled ? 'disabled' : black ? 'black' : 'white'"
-    @click="handleClick"
-    :disabled="disabled"
-  >
+  <button class="h-14 box-content text-xl transition-all" :class="getClasses" @click="handleClick" :disabled="disabled">
     <slot />
   </button>
 </template>
@@ -19,7 +14,11 @@
         type: Boolean,
         default: false,
       },
-      black: {
+      white: {
+        type: Boolean,
+        default: false,
+      },
+      small: {
         type: Boolean,
         default: false,
       },
@@ -30,10 +29,18 @@
         type: Function,
       },
     },
+    computed: {
+      getClasses() {
+        let classes: string;
+        classes = this.disabled ? 'disabled' : this.white ? 'white' : 'black';
+        classes += this.small ? ' w-32' : ' w-40';
+        return classes;
+      },
+    },
     methods: {
       handleClick() {
         if (this.link) {
-          if (this.link.includes('https://')) window.location.href = this.link;
+          if (this.link.includes('http')) window.location.href = this.link;
           else this.$router.push(this.link);
         } else {
           this.onClick();

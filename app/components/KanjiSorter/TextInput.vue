@@ -3,9 +3,9 @@
     <div class="mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
-        <MyButton black :onClick="onClickAbout" disabled>About</MyButton>
+        <MyButton :onClick="onClickAbout" disabled>About</MyButton>
         <NuxtLink to="/patreon" class="flex-shrink-0 h-full">
-          <img src="../../static/patreon_logo.png" alt="Patreon Logo" class="h-full" />
+          <img src="~/static/patreon_logo.png" alt="Patreon Logo" class="h-full" />
         </NuxtLink>
       </div>
     </div>
@@ -18,7 +18,7 @@
     ></textarea>
     <div class="grid grid-cols-4 gap-4 justify-around">
       <div class="flex">
-        <MyButton black :onClick="onGetKanji" class="w-full">Get kanji</MyButton>
+        <MyButton :onClick="onGetKanji" class="w-full">Get kanji</MyButton>
         <div class="relative">
           <svg height="80" width="50" class="absolute" style="left: -17px; top: 25px; z-index: -1">
             <line x1="0" y1="1" x2="50" y2="1" style="stroke: black; stroke-width: 2" />
@@ -26,10 +26,10 @@
           </svg>
         </div>
       </div>
-      <MyButton black :onClick="() => onGetKanji(true)" class="w-full">Get new kanji</MyButton>
-      <MyButton black :onClick="onClear" class="w-full">Clear</MyButton>
-      <!-- <MyButton black :onClick="onAddToList" class="w-full">Add to list</MyButton> -->
-      <MyButton black :onClick="onImportList" disabled class="col-start-4 w-full">Import list</MyButton>
+      <MyButton :onClick="() => onGetKanji(true)" class="w-full">Get new kanji</MyButton>
+      <MyButton :onClick="onClear" class="w-full">Clear</MyButton>
+      <!-- <MyButton :onClick="onAddToList" class="w-full">Add to list</MyButton> -->
+      <MyButton :onClick="onImportList" disabled class="col-start-4 w-full">Import list</MyButton>
       <div
         class="col-span-2 w-3/5 min-w-min p-1 mx-auto flex justify-center items-center text-xl bg-white border-2 border-black"
       >
