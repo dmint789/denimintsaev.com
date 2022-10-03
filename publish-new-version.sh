@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Please give the new version tag:" && read NEW_VERSION
-set -x
 
 if [ -z $1 ] || [ $1 != 'nogit' ]; then
   git push origin main &&
