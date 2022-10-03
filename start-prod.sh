@@ -19,4 +19,4 @@ docker rm denimintsaev &&
 docker rmi denimint/denimintsaev.com:latest &&
 # Pull new image and run it
 docker pull denimint/denimintsaev.com:latest &&
-docker run -d -p 3000:3000 --name denimintsaev --restart always denimint/denimintsaev.com:latest
+docker run -d -p 127.0.0.1:3000:3000 --name denimintsaev --restart always denimint/denimintsaev.com:latest

@@ -87,13 +87,25 @@ nginx -t &&  # check nginx status
 # Set up user
 echo -e "\nSetting up new user. Please enter username:" && read MY_USERNAME &&
 useradd -m -G sudo,adm,docker -s /bin/bash $MY_USERNAME &&
+passwd $MY_USERNAME &&
 # SSH key setup (this assumes that there is already a public key set up for the root user)
 cp -r /root/.ssh /home/$MY_USERNAME/ &&
 chown -vR $MY_USERNAME:$MY_USERNAME /home/$MY_USERNAME/.ssh &&
+
+# .bashrc file changes
+echo -e "\nChanging .bashrc file... (press ENTER)" && read &&
+cp /home/$MY_USERNAME/.bashrc /home/$MY_USERNAME/.bashrc.bak &&
+# Environment variables
+echo "Please input MONGO_ADMIN_USERNAME:" && read MONGO_ADMIN_USERNAME &&
+echo -e "\nPlease input MONGO_ADMIN_PASSWORD:" && read MONGO_ADMIN_PASSWORD &&
+echo -e "\n# Custom additions" |
+sed -e "\$a export MONGO_ADMIN_USERNAME=$MONGO_ADMIN_USERNAME" |
+sed -e "\$a export MONGO_ADMIN_PASSWORD=$MONGO_ADMIN_PASSWORD" |
 # Prompt (keep in mind that this way of escaping special characters may not work in other shells)
-MY_PROMPT="PS1='\\[\\033[1;36m\\]\\u \\[\\e[1;32m\\]\\w \\[\\e[00m\]\\\$ '" &&
-echo $MY_PROMPT >> /home/$MY_USERNAME/.bashrc &&
-echo "New prompt command: $MY_PROMPT (press ENTER)" && read &&
+sed -e '$a PS1='\''\\[\\033[1;36m\\]\\u \\[\\e[1;32m\\]\\w \\[\\e[00m\\]\\$ '\' |
+tee -a /home/$MY_USERNAME/.bashrc > /dev/null &&
+verify_file '.bashrc' /home/$MY_USERNAME/.bashrc &&
+
 # Aliases
 echo 'alias l="ls"' |
 sed -e '$a alias ls="ls --color=auto"' |
@@ -106,17 +118,13 @@ sed -e '$a alias g="git"' |
 sed -e '$a alias d="docker"' |
 sed -e '$a alias dco="docker-compose"' |
 tee /home/$MY_USERNAME/.bash_aliases &&
-chown -vR $MY_USERNAME:$MY_USERNAME /home/$MY_USERNAME/.bash_aliases &&
+chown -v $MY_USERNAME:$MY_USERNAME /home/$MY_USERNAME/.bash_aliases &&
 echo -e "\nSee .bash_aliases file contents above... (press ENTER)" && read &&
-# Password setup
-passwd $MY_USERNAME &&
 
 # Clone repo, cd into it and install packages
 echo -e "\nSetting up repo... (press ENTER)" && read &&
 cd /home/$MY_USERNAME &&
 git clone https://github.com/dmint789/denimintsaev.com.git &&
-echo -e "\nPlease import all of the environment variables... (press ENTER)" && read &&
-vim /home/$MY_USERNAME/denimintsaev.com/.env &&
 chown -vR $MY_USERNAME:$MY_USERNAME /home/$MY_USERNAME/denimintsaev.com &&
 
 echo -e "\nDeployment complete! Reboot? (y/n)" && read ANSWER

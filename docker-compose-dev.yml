@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   mongo:
     container_name: dm-mongo
@@ -6,12 +6,12 @@ services:
     networks:
       - denimintsaev
     ports:
-      - "${MONGO_PORT}:27017"
+      - 127.0.0.1:27017:27017
     volumes:
       - db-data:/data/db:rw
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmindev
+      - MONGO_INITDB_ROOT_PASSWORD=mongoadmindev123
       - MONGO_INITDB_DATABASE=denimintsaev
     restart: unless-stopped
   mongo-express:
@@ -20,16 +20,13 @@ services:
     networks:
       - denimintsaev
     ports:
-      - "${ME_PORT}:8081"
+      - 127.0.0.1:8080:8081
     environment:
       - ME_CONFIG_MONGODB_SERVER=dm-mongo
-      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
       - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
       - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-      - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ADMIN_USERNAME}
-      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ADMIN_PASSWORD}
-      - ME_CONFIG_BASICAUTH_USERNAME=${ME_BASICAUTH_USERNAME}
-      - ME_CONFIG_BASICAUTH_PASSWORD=${ME_BASICAUTH_PASSWORD}
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=mongoadmindev
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongoadmindev123
     depends_on:
       - mongo
     restart: unless-stopped
