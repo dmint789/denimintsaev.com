@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // Handles json data
 app.use(express.urlencoded({ extended: true })); // Handles url encoded data
-//app.use(express.static('uploads')); // Taken from a tutorial
+app.use('/static', express.static('../static')); // Static files
 
 // Routes
 app.use('/posts', PostsRouter);

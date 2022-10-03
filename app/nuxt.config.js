@@ -31,9 +31,10 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
+    // Base URL for making requests as server (SSR). API_URL env variable overrides this.
     baseURL: 'http://localhost:5000',
-    // If left unset, will default to the value of baseURL
-    browserBaseURL: 'http://localhost:3000',
+    // Base URL for making requests as client (if unset defaults to the value of baseURL). API_URL_BROWSER overrides this.
+    //browserBaseURL: 'http://localhost:5000',
     retry: {
       retries: 2,
     },

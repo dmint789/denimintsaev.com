@@ -34,7 +34,8 @@
   export default Vue.extend({
     name: 'KanjiSorter',
     async created() {
-      const data = await this.$axios.$get('/kanjiData.json');
+      // $get is a shortcut for get().data
+      const data = await this.$axios.$get('/static/kanjiData.json');
       this.setKanjiData(data);
 
       this.loadKanjiList();
