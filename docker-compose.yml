@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   mongo:
     container_name: dm-mongo
@@ -7,24 +7,26 @@ services:
       - denimintsaev
     ports:
       # Map host's port (left) on localhost to container's port (right)
-      - '127.0.0.1:27017:27017'
+      - 127.0.0.1:27017:27017
     volumes:
       - db-data:/data/db:rw
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_ADMIN_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_ADMIN_PASSWORD
+      - MONGO_DEV_USERNAME=$MONGO_DEV_USERNAME
+      - MONGO_DEV_PASSWORD=$MONGO_DEV_PASSWORD
       - MONGO_INITDB_DATABASE=denimintsaev
     restart: always
   dm-server:
     container_name: denimintsaev
     image: denimint/denimintsaev.com
-    build: .
     networks:
       - denimintsaev
     ports:
       - 127.0.0.1:3000:3000
     environment:
-      - MONGODB_URI='mongodb://${MONGO_ADMIN_USERNAME}:${MONGO_ADMIN_PASSWORD}@dm-mongo:27017'
+      - MONGODB_URI=mongodb://$MONGO_DEV_USERNAME:$MONGO_DEV_PASSWORD@dm-mongo:27017/denimintsaev
     depends_on:
       - mongo
     restart: always

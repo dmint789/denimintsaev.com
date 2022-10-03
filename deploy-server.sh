@@ -36,6 +36,16 @@ apt autoremove -y --purge snapd gnome-software-plugin-snap &&
 rm -rf ~/snap &&
 apt-mark hold snapd &&
 
+# Add swapfile
+echo -e "\nCreating swapfile. Please give the size in GB:" && read SWAP_GB &&
+fallocate -l ${SWAP_GB}G /swapfile &&
+chmod 600 /swapfile &&
+mkswap /swapfile &&
+swapon /swapfile &&
+echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab &&
+echo -e "\nvm.swappiness=10\nvm.vfs_cache_pressure=50" | tee -a /etc/sysctl.conf &&
+swapon --show &&
+
 # Unattended upgrades
 echo -e "\nSetting up unattended upgrades... (press ENTER)" && read &&
 dpkg-reconfigure --priority=low unattended-upgrades &&
@@ -96,11 +106,15 @@ chown -vR $MY_USERNAME:$MY_USERNAME /home/$MY_USERNAME/.ssh &&
 echo -e "\nChanging .bashrc file... (press ENTER)" && read &&
 cp /home/$MY_USERNAME/.bashrc /home/$MY_USERNAME/.bashrc.bak &&
 # Environment variables
-echo "Please input MONGO_ADMIN_USERNAME:" && read MONGO_ADMIN_USERNAME &&
-echo -e "\nPlease input MONGO_ADMIN_PASSWORD:" && read MONGO_ADMIN_PASSWORD &&
+echo -e "Please input Mongo DB admin username:" && read MONGO_ADMIN_USERNAME &&
+echo -e "\nPlease input Mongo DB admin password:" && read MONGO_ADMIN_PASSWORD &&
+echo -e "\nPlease input Mongo DB developer username:" && read MONGO_DEV_USERNAME &&
+echo -e "\nPlease input Mongo DB developer password:" && read MONGO_DEV_PASSWORD &&
 echo -e "\n# Custom additions" |
 sed -e "\$a export MONGO_ADMIN_USERNAME=$MONGO_ADMIN_USERNAME" |
 sed -e "\$a export MONGO_ADMIN_PASSWORD=$MONGO_ADMIN_PASSWORD" |
+sed -e "\$a export MONGO_DEV_USERNAME=$MONGO_DEV_USERNAME" |
+sed -e "\$a export MONGO_DEV_PASSWORD=$MONGO_DEV_PASSWORD" |
 # Prompt (keep in mind that this way of escaping special characters may not work in other shells)
 sed -e '$a PS1='\''\\[\\033[1;36m\\]\\u \\[\\e[1;32m\\]\\w \\[\\e[00m\\]\\$ '\' |
 tee -a /home/$MY_USERNAME/.bashrc > /dev/null &&

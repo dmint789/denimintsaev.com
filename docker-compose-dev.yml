@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   mongo:
     container_name: dm-mongo
@@ -7,8 +7,6 @@ services:
       - denimintsaev
     ports:
       - 127.0.0.1:27017:27017
-    volumes:
-      - db-data:/data/db:rw
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongoadmindev
       - MONGO_INITDB_ROOT_PASSWORD=mongoadmindev123
@@ -23,8 +21,6 @@ services:
       - 127.0.0.1:8080:8081
     environment:
       - ME_CONFIG_MONGODB_SERVER=dm-mongo
-      - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
-      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
       - ME_CONFIG_MONGODB_AUTH_USERNAME=mongoadmindev
       - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongoadmindev123
     depends_on:
@@ -32,6 +28,3 @@ services:
     restart: unless-stopped
 networks:
   denimintsaev:
-volumes:
-  db-data:
-    driver: local

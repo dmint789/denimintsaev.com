@@ -10,23 +10,24 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // Handles json data
 app.use(express.urlencoded({ extended: true })); // Handles url encoded data
-//app.use(express.static('uploads')); // Taken from the tutorial
+//app.use(express.static('uploads')); // Taken from a tutorial
 
 // Routes
 app.use('/api/posts', PostsRouter);
 
 // Database
-const dbURI = process.env.MONGODB_URI || 'mongodb://mongoadmindev:mongoadmindev123@localhost:27017';
+const dbURI = process.env.MONGODB_URI || 'mongodb://mongoadmindev:mongoadmindev123@localhost:27017/admin';
 
 const options = {
   dbName: 'denimintsaev',
   useNewUrlParser: true,
   useUnifiedTopology: true,
   keepAlive: true,
+  socketTimeoutMS: 30000,
+  serverSelectionTimeoutMS: 40000,
   //autoIndex: false,
   //poolSize: 50,
   //retryWrites: false,
-  //socketTimeoutMS: 30000,
   //useFindAndModify: true,
   //useCreateIndex: true,
 };

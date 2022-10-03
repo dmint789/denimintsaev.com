@@ -6,8 +6,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint:prettier": "prettier --check .",
-    "lint": "yarn lint:prettier",
+    "lint": "prettier --check .",
     "lintfix": "prettier --write --list-different ."
   },
   "dependencies": {
