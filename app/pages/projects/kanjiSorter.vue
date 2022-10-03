@@ -35,7 +35,7 @@
     name: 'KanjiSorter',
     async created() {
       // $get is a shortcut for get().data
-      const data = await this.$axios.$get('/static/kanjiData.json');
+      const data = await this.$axios.$get('/api/static/kanjiData.json');
       this.setKanjiData(data);
 
       this.loadKanjiList();

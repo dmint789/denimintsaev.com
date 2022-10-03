@@ -10,12 +10,14 @@ if [ -z $1 ] || [ $1 != 'nogit' ]; then
 fi
 
 if [ -z $1 ] || [ $1 != 'nodocker' ]; then
+  docker login -u denimint
   docker rm --force denimintsaev
   docker rmi denimint/denimintsaev.com:latest
   docker images | grep denimint | tr -s ' ' | cut -d ' ' -f 3 | xargs docker rmi
   docker build -t denimint/denimintsaev.com:$NEW_VERSION . &&
-  docker login -u denimint &&
   docker tag denimint/denimintsaev.com:$NEW_VERSION denimint/denimintsaev.com:latest &&
   docker push denimint/denimintsaev.com:$NEW_VERSION &&
   docker push denimint/denimintsaev.com:latest
 fi
+
+echo -e "\nDone!"
