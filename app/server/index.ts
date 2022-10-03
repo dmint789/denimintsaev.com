@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true })); // Handles url encoded data
 //app.use(express.static('uploads')); // Taken from a tutorial
 
 // Routes
-app.use('/api/posts', PostsRouter);
+app.use('/posts', PostsRouter);
 
 // Database
 const dbURI = process.env.MONGODB_URI || 'mongodb://mongoadmindev:mongoadmindev123@localhost:27017/admin';
@@ -37,7 +37,7 @@ mongoose
   .then(() => console.log('Connected to the DB'))
   .catch((err) => console.log(err));
 
-const PORT = process.env.BACKEND_PORT || 4999;
+const PORT = process.env.BACKEND_PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
