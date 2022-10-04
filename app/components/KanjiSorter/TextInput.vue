@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
+    <div class="mt-3 md:mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
         <MyButton :onClick="onClickAbout" disabled>About</MyButton>
@@ -31,7 +31,7 @@
       <!-- <MyButton :onClick="onAddToList" class="w-full">Add to list</MyButton> -->
       <MyButton :onClick="onImportList" disabled class="col-start-4 w-full">Import list</MyButton>
       <div
-        class="col-span-2 w-3/5 min-w-min p-1 mx-auto flex justify-center items-center text-xl bg-white border-2 border-black"
+        class="col-span-2 w-3/5 min-w-min mx-auto p-1 flex justify-center items-center text-xl bg-white border-2 border-black"
       >
         <div class="mr-4 flex items-center">
           <label for="replace">Replace</label>

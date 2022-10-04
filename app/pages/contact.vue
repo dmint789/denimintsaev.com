@@ -1,17 +1,15 @@
 <template>
-  <div class="pb-6 bg-mygray-900">
+  <PageSection class="bg-mygray-900">
     <MyHeader white :size="5">My Links</MyHeader>
-    <div class="mt-2 mb-8 flex flex-col items-center gap-4">
-      <MyButton link="https://youtube.com/c/DeniMintsaev">YouTube</MyButton>
-      <MyButton link="https://patreon.com/denimintsaev">Patreon</MyButton>
-      <MyButton link="https://makecound.bandcamp.com/">Bandcamp</MyButton>
-      <MyButton link="https://odysee.com/@denthebro:3">Odysee</MyButton>
-      <MyButton link="https://worldcubeassociation.org/persons/2013MINT01"
-        >WCA Profile</MyButton
-      >
+    <div class="items-column">
+      <MyButton white link="https://youtube.com/c/DeniMintsaev">YouTube</MyButton>
+      <MyButton white link="https://patreon.com/denimintsaev">Patreon</MyButton>
+      <MyButton white link="https://makecound.bandcamp.com/">Bandcamp</MyButton>
+      <MyButton white link="https://odysee.com/@denthebro:3">Odysee</MyButton>
+      <MyButton white link="https://worldcubeassociation.org/persons/2013MINT01">WCA Profile</MyButton>
     </div>
-    <p class="text-xl text-center text-white">Email: cube327@tuta.io</p>
-  </div>
+    <p class="par-center mt-8 text-white">Email: cube327@tuta.io</p>
+  </PageSection>
 </template>
 
 <script lang="ts">

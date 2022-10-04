@@ -34,7 +34,7 @@
       >
       </textarea>
     </div>
-    <div class="mb-4 flex items-start">
+    <div class="my-4 flex items-start">
       <div class="mr-1 flex-1 text-xl">
         <MyHeader :size="2">View</MyHeader>
         <div class="mx-auto mt-2 w-max">
@@ -112,10 +112,7 @@
           :disabled="getSortType(true) !== 'textorder'"
           class="w-5 h-5"
         />
-        <label
-          :for="prefix('repeats')"
-          class="text-2xl"
-          :class="getSortType(results) === 'textorder' ? 'text-black' : 'text-mygray-600'"
+        <label :for="prefix('repeats')" :class="getSortType(results) === 'textorder' ? 'text-black' : 'text-mygray-600'"
           >Show repeats</label
         >
       </div>
@@ -128,7 +125,7 @@
           :checked="getReversed(results)"
           class="w-5 h-5"
         />
-        <label :for="prefix('reversed')" class="text-2xl">Reversed</label>
+        <label :for="prefix('reversed')">Reversed</label>
       </div>
       <div class="cb-and-label">
         <input
@@ -139,7 +136,7 @@
           :checked="getNegativeFilter(results)"
           class="w-5 h-5"
         />
-        <label :for="prefix('negativefilter')" class="text-2xl">Negative Filter</label>
+        <label :for="prefix('negativefilter')">Negative Filter</label>
       </div>
     </div>
   </div>

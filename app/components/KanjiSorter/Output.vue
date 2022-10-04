@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6">
+  <div class="mt-3 md:mt-6">
     <MyHeader :size="3">Result</MyHeader>
     <div class="p-2 flex justify-between items-center text-2xl">
       <div class="cb-and-label">
@@ -13,10 +13,10 @@
           class="w-5 h-5"
         />
       </div>
-      <h2>Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</h2>
+      <MyHeader nocenter :size="2">Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</MyHeader>
     </div>
     <KanjiSorterDisplay :results="true" />
-    <div class="mb-4 grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 gap-4">
       <MyButton :onClick="onAddToList" class="w-full">Add to list</MyButton>
       <MyButton :onClick="onClear" class="w-full">Clear</MyButton>
     </div>

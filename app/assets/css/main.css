@@ -4,8 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* NOTE: this website uses lg size for the max width of the page and md as the
+   cutoff point for when text has to become bigger/smaller. */
+
+label {
+  @apply text-xl md:text-2xl;
+}
+
 .paragraph {
   @apply text-xl text-justify;
+}
+
+.par-center {
+  @apply text-xl text-center;
+}
+
+.items-column {
+  @apply mt-5 flex flex-col items-center gap-4;
 }
 
 /* Checkbox with label container */

@@ -1,6 +1,9 @@
 <template>
   <div class="w-full">
-    <div class="mx-auto px-3 w-full max-w-4xl" :class="`py-${py}`">
+    <div
+      class="mx-auto px-3 w-full max-w-screen-lg"
+      :class="`py-${py > 4 ? py - 2 : py > 2 ? py - 1 : py} md:py-${py}`"
+    >
       <slot />
     </div>
   </div>
@@ -14,7 +17,7 @@
     props: {
       py: {
         type: Number,
-        default: 8,
+        default: 6,
       },
     },
   });

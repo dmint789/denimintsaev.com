@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <nav class="p-6 bg-black">
-      <div class="w-full max-w-5xl mx-auto flex flex-wrap justify-between items-center text-white">
-        <span class="flex-shrink-0 text-2xl font-semibold">Deni Mintsaev</span>
-        <div class="block lg:hidden">
+    <nav class="py-4 bg-black">
+      <div class="mx-auto px-3 w-full max-w-screen-lg flex flex-wrap justify-between items-center text-white">
+        <NuxtLink to="/" class="flex-shrink-0 text-2xl font-semibold hover:text-gray-300">Deni Mintsaev</NuxtLink>
+        <div class="block md:hidden">
           <!-- This needs to be a hamburger icon -->
           <button
             class="flex items-center px-3 py-2 border rounded text-white border-white hover:text-gray-300 hover:border-gray-300"
@@ -12,14 +12,12 @@
             Menu
           </button>
         </div>
-        <div class="block w-full flex-grow justify-end lg:flex lg:items-center lg:w-auto" v-if="menuVisible">
-          <div class="text-lg">
-            <a href="/">Home</a>
-            <a href="/projects">Projects</a>
-            <a href="/blog">Blog</a>
-            <a href="/patreon">Patreon</a>
-            <a href="/contact">Contact</a>
-          </div>
+        <div class="flex-grow w-full pt-2 md:w-auto md:pt-0 md:flex md:justify-end md:items-center" v-if="menuVisible">
+          <MyButton noborder link="/">Home</MyButton>
+          <MyButton noborder link="/projects">Projects</MyButton>
+          <MyButton noborder link="/blog">Blog</MyButton>
+          <MyButton noborder link="/patreon">Patreon</MyButton>
+          <MyButton noborder link="/contact">Contact</MyButton>
         </div>
       </div>
     </nav>
@@ -52,7 +50,8 @@
     },
     computed: {
       menuVisible(): boolean {
-        return this.menuOpen || this.width >= 1024; // 1024px is lg
+        // 768px is md, 1024px is lg
+        return this.menuOpen || this.width >= 768;
       },
     },
     methods: {
@@ -63,11 +62,4 @@
   });
 </script>
 
-<style lang="postcss" scoped>
-  a {
-    @apply mt-4 lg:inline-block lg:mt-0 hover:text-gray-300;
-  }
-  a:not(:last-child) {
-    @apply mr-6;
-  }
-</style>
+<style lang="postcss" scoped></style>

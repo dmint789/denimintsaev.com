@@ -1,5 +1,7 @@
 <template>
-  <div>Patreon</div>
+  <PageSection>
+    <MyHeader :size="5">Patreon</MyHeader>
+  </PageSection>
 </template>
 
 <script lang="ts">

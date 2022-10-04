@@ -1,10 +1,10 @@
 <template>
-  <PageSection>
-    <MyHeader :size="5">Projects</MyHeader>
-    <div class="mt-2 w-full flex flex-col items-center gap-4">
-      <MyButton link="/kanjisorter">Kanji Sorter</MyButton>
-      <MyButton link="https://denthebro.itch.io/red-octagon">Red Octagon</MyButton>
-      <!-- <MyButton link="/pll_bingo.png">PLL Bingo</MyButton> -->
+  <PageSection class="bg-mygray-900">
+    <MyHeader :size="5" white>Projects</MyHeader>
+    <div class="items-column">
+      <MyButton white link="/kanjisorter">Kanji Sorter</MyButton>
+      <MyButton white link="https://denthebro.itch.io/red-octagon">Red Octagon</MyButton>
+      <MyButton white link="/api/static/pll_bingo.jpg">PLL Bingo</MyButton>
     </div>
   </PageSection>
 </template>
