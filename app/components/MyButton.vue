@@ -41,7 +41,7 @@
         let classes: string;
 
         // For now the only use for noborder is in the nav bar, which needs to have smaller buttons
-        if (this.noborder) classes = 'px-2 h-12 ';
+        if (this.noborder) classes = 'px-3 h-12 ';
         else classes = (this.small ? 'w-32' : 'w-40') + ' h-14 border ';
 
         classes += this.disabled ? 'disabled' : this.white ? 'white' : 'black';

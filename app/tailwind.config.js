@@ -31,6 +31,11 @@ module.exports = {
     enabled: true,
     options: {
       safelist: [
+        'w-36',
+        'w-40',
+        'max-w-screen-sm',
+        'max-w-screen-md',
+        'max-w-screen-lg',
         'py-1',
         'py-2',
         'py-3',
@@ -44,8 +49,6 @@ module.exports = {
         'md:py-4',
         'md:py-5',
         'md:py-6',
-        'w-36',
-        'w-40',
         'text-xl',
         'text-2xl',
         'text-3xl',

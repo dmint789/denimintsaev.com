@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!-- Modals -->
+    <Modal v-if="isImportListOpen" title="Select list to import" size="sm" @close="isImportListOpen = false">
+      Test 123
+    </Modal>
     <div class="mt-3 md:mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
@@ -29,7 +33,7 @@
       <MyButton :onClick="() => onGetKanji(true)" class="w-full">Get new kanji</MyButton>
       <MyButton :onClick="onClear" class="w-full">Clear</MyButton>
       <!-- <MyButton :onClick="onAddToList" class="w-full">Add to list</MyButton> -->
-      <MyButton :onClick="onImportList" disabled class="col-start-4 w-full">Import list</MyButton>
+      <MyButton :onClick="onImportList" class="col-start-4 w-full">Import list</MyButton>
       <div
         class="col-span-2 w-3/5 min-w-min mx-auto p-1 flex justify-center items-center text-xl bg-white border-2 border-black"
       >
@@ -72,6 +76,7 @@
       return {
         inputBox: '',
         isInputNew: true,
+        isImportListOpen: false,
       };
     },
     computed: {
@@ -95,7 +100,9 @@
         this.inputBox = '';
         this.isInputNew = true;
       },
-      onImportList() {},
+      onImportList() {
+        this.isImportListOpen = !this.isImportListOpen;
+      },
 
       ...mapMutations(['setMode']),
       ...mapActions(['getKanji']),
