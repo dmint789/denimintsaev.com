@@ -6,10 +6,10 @@
     </div>
     <KanjiSorterDisplay :results="false" />
     <div class="grid grid-cols-4 gap-4 justify-around">
-      <MyButton :onClick="onLoad" disabled class="w-full">Load</MyButton>
-      <MyButton :onClick="onSave" disabled class="w-full">Save</MyButton>
-      <MyButton :onClick="onDeleteSave" disabled class="w-full">Delete save</MyButton>
-      <MyButton :onClick="onClear" class="w-full">Clear</MyButton>
+      <MyButton @click="onLoad" disabled size="full">Load</MyButton>
+      <MyButton @click="onSave" disabled size="full">Save</MyButton>
+      <MyButton @click="onDeleteSave" disabled size="full">Delete save</MyButton>
+      <MyButton @click="onClear" size="full">Clear</MyButton>
     </div>
   </div>
 </template>

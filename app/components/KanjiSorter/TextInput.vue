@@ -1,13 +1,12 @@
 <template>
   <div>
     <!-- Modals -->
-    <Modal v-if="isImportListOpen" title="Select list to import" size="sm" @close="isImportListOpen = false">
-      Test 123
-    </Modal>
+    <KanjiSorterImportListModal v-if="isImportListOpen" @close="isImportListOpen = false" />
+
     <div class="mt-3 md:mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
-        <MyButton :onClick="onClickAbout" disabled>About</MyButton>
+        <MyButton @click="onClickAbout" disabled size="md">About</MyButton>
         <NuxtLink to="/patreon" class="flex-shrink-0 h-full">
           <img src="~/static/patreon_logo.png" alt="Patreon Logo" class="h-full" />
         </NuxtLink>
@@ -22,7 +21,7 @@
     ></textarea>
     <div class="grid grid-cols-4 gap-4 justify-around">
       <div class="flex">
-        <MyButton :onClick="onGetKanji" class="w-full">Get kanji</MyButton>
+        <MyButton @click="onGetKanji" size="md" class="w-full">Get kanji</MyButton>
         <div class="relative">
           <svg height="80" width="50" class="absolute" style="left: -17px; top: 25px; z-index: -1">
             <line x1="0" y1="1" x2="50" y2="1" style="stroke: black; stroke-width: 2" />
@@ -30,10 +29,9 @@
           </svg>
         </div>
       </div>
-      <MyButton :onClick="() => onGetKanji(true)" class="w-full">Get new kanji</MyButton>
-      <MyButton :onClick="onClear" class="w-full">Clear</MyButton>
-      <!-- <MyButton :onClick="onAddToList" class="w-full">Add to list</MyButton> -->
-      <MyButton :onClick="onImportList" class="col-start-4 w-full">Import list</MyButton>
+      <MyButton @click="() => onGetKanji(true)" size="md" class="w-full">Get new kanji</MyButton>
+      <MyButton @click="onClear" size="md" class="w-full">Clear</MyButton>
+      <MyButton @click="onImportList" size="md" class="w-full">Import list</MyButton>
       <div
         class="col-span-2 w-3/5 min-w-min mx-auto p-1 flex justify-center items-center text-xl bg-white border-2 border-black"
       >

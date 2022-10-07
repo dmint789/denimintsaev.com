@@ -18,13 +18,17 @@
           <i class="fa-solid fa-xmark w-10 h-10"></i>
         </button>
       </div>
-      <slot />
+      <div class="pt-4 pb-2">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-  export default {
+<script lang="ts">
+  import Vue from 'vue';
+
+  export default Vue.extend({
     name: 'Modal',
     props: {
       title: {
@@ -32,9 +36,9 @@
         required: true,
       },
       size: {
-        type: 'sm' | 'md' | 'lg',
+        type: String as () => 'sm' | 'md' | 'lg',
         default: 'md',
       },
     },
-  };
+  });
 </script>

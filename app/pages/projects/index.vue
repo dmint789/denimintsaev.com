@@ -2,9 +2,9 @@
   <PageSection class="bg-mygray-900">
     <MyHeader :size="5" white>Projects</MyHeader>
     <div class="items-column">
-      <MyButton white link="/kanjisorter">Kanji Sorter</MyButton>
-      <MyButton white link="https://denthebro.itch.io/red-octagon">Red Octagon</MyButton>
-      <MyButton white link="/api/static/pll_bingo.jpg">PLL Bingo</MyButton>
+      <MyButton white size="md" link="/kanjisorter">Kanji Sorter</MyButton>
+      <MyButton white size="md" link="https://denthebro.itch.io/red-octagon">Red Octagon</MyButton>
+      <MyButton white size="md" link="/api/static/pll_bingo.jpg">PLL Bingo</MyButton>
     </div>
   </PageSection>
 </template>

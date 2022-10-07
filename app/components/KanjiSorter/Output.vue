@@ -17,8 +17,8 @@
     </div>
     <KanjiSorterDisplay :results="true" />
     <div class="grid grid-cols-2 gap-4">
-      <MyButton :onClick="onAddToList" class="w-full">Add to list</MyButton>
-      <MyButton :onClick="onClear" class="w-full">Clear</MyButton>
+      <MyButton @click="onAddToList" size="full">Add to list</MyButton>
+      <MyButton @click="onClear" size="full">Clear</MyButton>
     </div>
   </div>
 </template>

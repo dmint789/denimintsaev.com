@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="w-full h-80 mt-2 px-2 py-1 text-xl border-2 border-black">
-      <div v-if="getView(results) === 'default'" class="w-full h-full pr-2 overflow-auto">
-        <table class="relative w-full table-auto">
-          <thead class="sticky box-border top-0 py-4 border-b-2 border-mygray-500 bg-white">
-            <tr class="table-headings py-4 bg-white">
+    <div class="w-full h-80 mt-2 text-xl border-2 border-black">
+      <div v-if="getView(results) === 'default'" class="w-full h-full overflow-auto">
+        <table class="w-full table-auto">
+          <thead class="box-border border-b-2 border-mygray-500">
+            <tr class="table-headings bg-white">
               <th>#</th>
               <th>Kanji</th>
               <th v-if="results">Occurrences</th>

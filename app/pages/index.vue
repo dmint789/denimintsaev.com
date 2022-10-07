@@ -19,9 +19,9 @@
         world.
       </p>
       <div class="mt-8 flex justify-center gap-4">
-        <MyButton white small link="/projects">Projects</MyButton>
-        <MyButton white small link="/blog">Blog</MyButton>
-        <MyButton white small link="/contact">Links</MyButton>
+        <MyButton white size="sm" link="/projects">Projects</MyButton>
+        <MyButton white size="sm" link="/blog">Blog</MyButton>
+        <MyButton white size="sm" link="/contact">Links</MyButton>
       </div>
     </PageSection>
     <PageSection>
@@ -38,7 +38,7 @@
             website and my music, feel free to become a Patreon supporter. Huge thanks to everyone, who has made a
             pledge, your contributions are greatly appreciated!
           </p>
-          <MyButton link="https://www.patreon.com/denimintsaev">Support</MyButton>
+          <MyButton size="lg" link="https://www.patreon.com/denimintsaev">Support</MyButton>
         </div>
       </div>
     </PageSection>

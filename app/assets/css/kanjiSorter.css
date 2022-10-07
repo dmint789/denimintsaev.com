@@ -5,12 +5,9 @@
   @apply text-center border-mygray-500;
 }
 
-/* .table-headings:first-child > th {
-  @apply py-1 ;
+.table-headings > th {
+  @apply h-10;
 }
-.table-headings:not(:first-child) > th {
-  @apply py-2 border-t-2 border-b-2;
-} */
 
 .table-headings > th:not(:last-child),
 .table-data > td:not(:last-child) {
