@@ -7,9 +7,9 @@
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
         <MyButton @click="onClickAbout" disabled size="md">About</MyButton>
-        <NuxtLink to="/patreon" class="flex-shrink-0 h-full">
+        <a href="https://www.patreon.com/denimintsaev" class="flex-shrink-0 h-full">
           <img src="~/static/patreon_logo.png" alt="Patreon Logo" class="h-full" />
-        </NuxtLink>
+        </a>
       </div>
     </div>
     <textarea

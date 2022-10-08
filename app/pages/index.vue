@@ -4,7 +4,7 @@
       <p class="text-justify">
         This website is currently a work-in-progress. I am rebuilding it from the ground up, due to Wix stopping service
         for users based in Russia. The old website will be available through
-        <NuxtLink to="https://dmintsaev.wixsite.com/website">this link</NuxtLink>
+        <a href="https://dmintsaev.wixsite.com/website">this link</a>
         until I rebuild most of the old functionality. However, the
         <NuxtLink to="/kanjisorter">Kanji Sorter</NuxtLink> is already available here (and improved), so feel free to
         use it.

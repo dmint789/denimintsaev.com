@@ -1,7 +1,7 @@
 <template>
-  <NuxtLink v-if="link" :to="link" class="button flex justify-center items-center" :class="getClasses">
+  <a v-if="link" :href="link" class="button flex justify-center items-center" :class="getClasses">
     <slot />
-  </NuxtLink>
+  </a>
   <button v-else @click="$emit('click')" :disabled="disabled" class="button" :class="getClasses">
     <slot />
   </button>
