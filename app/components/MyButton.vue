@@ -101,7 +101,7 @@
     @apply hover:text-black hover:bg-white hover:border-black;
   }
   .gray-hover {
-    @apply hover:text-black hover:bg-mygray-400 hover:border-black;
+    @apply hover:text-black hover:bg-mygray-200 hover:border-black;
   }
   .disabled {
     @apply text-white bg-mygray-500 border border-white;

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="w-full h-80 mt-2 text-xl border-2 border-black">
-      <div v-if="getView(results) === 'default'" class="w-full h-full overflow-auto">
+    <div class="w-full h-80 mt-2 text-xl">
+      <div v-if="getView(results) === 'default'" class="overflow-auto w-full h-full border-2 border-black">
         <table class="w-full table-auto">
           <thead class="box-border border-b-2 border-mygray-500">
             <tr class="table-headings bg-white">
@@ -30,7 +30,7 @@
         placeholder="Result"
         :value="getKanjiOnly(results)"
         disabled
-        class="w-full h-full max-h-80 px-3 py-2 text-2xl items-start hover:bg-mygray-50"
+        class="big-input-output-box h-full resize-none"
       >
       </textarea>
     </div>

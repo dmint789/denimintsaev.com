@@ -13,3 +13,7 @@
 .table-data > td:not(:last-child) {
   @apply border-r-2;
 }
+
+.big-input-output-box {
+  @apply w-full px-3 py-2 text-2xl items-start border-2 border-black hover:bg-mygray-50;
+}

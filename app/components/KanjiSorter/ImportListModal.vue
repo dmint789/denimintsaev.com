@@ -22,13 +22,22 @@
         </SelectionButton>
       </div>
 
-      <div class="mb-4 flex items-center">
-        <div class="flex flex-col items-center">
-          <MyHeader :size="3"># of characters:</MyHeader>
+      <div class="my-6 flex items-center gap-8">
+        <div class="flex flex-col items-center gap-3">
+          <h3 class="text-3xl"># of characters:</h3>
           <p class="text-2xl">Max: {{ maxChars }}</p>
         </div>
+        <NumberInput name="maxchars" placeholder="All characters" :min="1" :max="maxChars" class="w-48" />
       </div>
 
+      <MyCheckbox
+        name="importreversed"
+        text="Reversed"
+        :disabled="getReversedDisabled()"
+        :checked="reversed"
+        @change="(val) => (reversed = val)"
+        class="mb-6"
+      />
       <MyButton size="md" @click="onImport">Import</MyButton>
     </div>
   </Modal>
@@ -42,33 +51,59 @@
     name: 'ImportListModal',
     data() {
       return {
+        lists: {
+          newspapers: '',
+          novels: '',
+          strokecount: '',
+          jlpt: {},
+          joyo: '',
+          fullLibrary: '',
+        },
         selected: ImportType.Newspapers,
         chars: 0,
         maxChars: 0,
+        reversed: false,
       };
     },
+    async created() {
+      this.newspapers = await this.$axios.$get('/api/static/newspaper_sort_kanji.txt');
+      this.novels = await this.$axios.$get('/api/static/novel_sort_kanji.txt');
+      this.strokecount = await this.$axios.$get('/api/static/kanji_by_stroke_count.txt');
+      this.jlpt = await this.$axios.$get('/api/static/jlpt_kanji.json');
+      this.joyo = await this.$axios.$get('/api/static/joyo_kanji.txt');
+      this.fullLibrary = await this.$axios.$get('/api/static/all_kanji.txt');
+
+      this.changeSel(this.selected);
+    },
     methods: {
+      getReversedDisabled() {
+        return (
+          this.selected === ImportType.JLPT ||
+          this.selected === ImportType.Joyo ||
+          this.selected === ImportType.FullLibrary
+        );
+      },
       changeSel(newSel: ImportType) {
         this.selected = newSel;
 
         switch (newSel) {
           case ImportType.Newspapers:
-            this.maxChars = 2500;
+            this.maxChars = this.newspapers.length;
             break;
           case ImportType.Novels:
-            this.maxChars = 2500;
+            this.maxChars = this.novels.length;
             break;
           case ImportType.StrokeCount:
-            this.maxChars = 2500;
+            this.maxChars = this.strokecount.length;
             break;
           case ImportType.JLPT:
-            this.maxChars = 2500;
+            this.maxChars = 0;
             break;
           case ImportType.Joyo:
-            this.maxChars = 2500;
+            this.maxChars = this.joyo.length;
             break;
           case ImportType.FullLibrary:
-            this.maxChars = 2500;
+            this.maxChars = this.fullLibrary.length;
             break;
           default:
             throw 'Trying to import an unknown import type!';

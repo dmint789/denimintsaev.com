@@ -17,7 +17,7 @@
       placeholder="Enter text here"
       v-model="inputBox"
       @change="onUpdateInput"
-      class="w-full h-80 max-h-80 my-4 px-3 py-2 text-2xl items-start border-2 border-black hover:bg-mygray-50"
+      class="big-input-output-box h-80 my-4"
     ></textarea>
     <div class="grid grid-cols-4 gap-4 justify-around">
       <div class="flex">
@@ -74,7 +74,7 @@
       return {
         inputBox: '',
         isInputNew: true,
-        isImportListOpen: false,
+        isImportListOpen: true,
       };
     },
     computed: {
