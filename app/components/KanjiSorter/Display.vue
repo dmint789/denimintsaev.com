@@ -102,42 +102,26 @@
       </div>
     </div>
     <div class="mb-6 flex justify-around items-center gap-4">
-      <div v-if="results" class="cb-and-label">
-        <input
-          type="checkbox"
-          :id="prefix('repeats')"
-          :name="prefix('repeats')"
-          @change="(e) => changeRepeats(e.target.checked)"
-          :checked="getRepeats()"
-          :disabled="getSortType(true) !== 'textorder'"
-          class="w-5 h-5"
-        />
-        <label :for="prefix('repeats')" :class="getSortType(results) === 'textorder' ? 'text-black' : 'text-mygray-600'"
-          >Show repeats</label
-        >
-      </div>
-      <div class="cb-and-label">
-        <input
-          type="checkbox"
-          :id="prefix('reversed')"
-          :name="prefix('reversed')"
-          @change="(e) => changeReversed({ results, value: e.target.checked })"
-          :checked="getReversed(results)"
-          class="w-5 h-5"
-        />
-        <label :for="prefix('reversed')">Reversed</label>
-      </div>
-      <div class="cb-and-label">
-        <input
-          type="checkbox"
-          :id="prefix('negativefilter')"
-          :name="prefix('negativefilter')"
-          @change="(e) => changeNegativeFilter({ results, value: e.target.checked })"
-          :checked="getNegativeFilter(results)"
-          class="w-5 h-5"
-        />
-        <label :for="prefix('negativefilter')">Negative Filter</label>
-      </div>
+      <MyCheckbox
+        v-if="results"
+        :name="prefix('repeats')"
+        text="Show repeats"
+        :checked="getRepeats()"
+        :disabled="getSortType(true) !== 'textorder'"
+        @change="(value) => changeRepeats(value)"
+      />
+      <MyCheckbox
+        :name="prefix('reversed')"
+        text="Reversed"
+        :checked="getReversed(results)"
+        @change="(value) => changeReversed({ results, value })"
+      />
+      <MyCheckbox
+        :name="prefix('negativefilter')"
+        text="Negative filter"
+        :checked="getNegativeFilter(results)"
+        @change="(value) => changeNegativeFilter({ results, value })"
+      />
     </div>
   </div>
 </template>

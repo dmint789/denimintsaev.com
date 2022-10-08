@@ -2,17 +2,13 @@
   <div class="mt-3 md:mt-6">
     <MyHeader :size="3">Result</MyHeader>
     <div class="p-2 flex justify-between items-center text-2xl">
-      <div class="cb-and-label">
-        <label for="update">Update</label>
-        <input
-          type="checkbox"
-          id="update"
-          name="update"
-          @change="(e) => onChangeUpdate(e.target.checked)"
-          :checked="getUpdate()"
-          class="w-5 h-5"
-        />
-      </div>
+      <MyCheckbox
+        name="update"
+        text="Update"
+        labelLeft
+        :checked="getUpdate()"
+        @change="(value) => changeUpdate(value)"
+      />
       <MyHeader nocenter :size="2">Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</MyHeader>
     </div>
     <KanjiSorterDisplay :results="true" />
@@ -33,9 +29,6 @@
       ...mapGetters(['getUniqueKanji', 'getTotalKanji', 'getUpdate']),
     },
     methods: {
-      onChangeUpdate(value: boolean) {
-        this.changeUpdate(value);
-      },
       onAddToList() {
         this.addToList();
       },

@@ -22,11 +22,3 @@ label {
 .items-column {
   @apply mt-5 flex flex-col items-center gap-4;
 }
-
-/* Checkbox with label container */
-.cb-and-label {
-  @apply flex items-center gap-3;
-}
-.cb-and-label > input {
-  @apply flex-shrink-0;
-}
