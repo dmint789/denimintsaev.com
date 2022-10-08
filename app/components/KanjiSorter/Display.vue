@@ -114,13 +114,13 @@
         :name="prefix('reversed')"
         text="Reversed"
         :checked="getReversed(results)"
-        @change="(val) => changeReversed({ results, value })"
+        @change="(value) => changeReversed({ results, value })"
       />
       <MyCheckbox
         :name="prefix('negative_filter')"
         text="Negative filter"
         :checked="getNegativeFilter(results)"
-        @change="(val) => changeNegativeFilter({ results, value })"
+        @change="(value) => changeNegativeFilter({ results, value })"
       />
     </div>
   </div>
