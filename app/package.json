@@ -2,6 +2,7 @@
   "name": "denimintsaev",
   "private": true,
   "scripts": {
+    "cdev": "nuxt",
     "dev": "nodemon --watch server --exec 'nuxt'",
     "build": "nuxt build",
     "start": "nuxt start",

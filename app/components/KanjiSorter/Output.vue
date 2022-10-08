@@ -2,13 +2,7 @@
   <div class="mt-3 md:mt-6">
     <MyHeader :size="3">Result</MyHeader>
     <div class="p-2 flex justify-between items-center text-2xl">
-      <MyCheckbox
-        name="update"
-        text="Update"
-        labelLeft
-        :checked="getUpdate()"
-        @change="(value) => changeUpdate(value)"
-      />
+      <MyCheckbox name="update" text="Update" labelLeft :checked="getUpdate()" @change="(val) => changeUpdate(val)" />
       <MyHeader nocenter :size="2">Unique: {{ getUniqueKanji() }} | Total: {{ getTotalKanji() }}</MyHeader>
     </div>
     <KanjiSorterDisplay :results="true" />

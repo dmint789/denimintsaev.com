@@ -15,7 +15,7 @@
           @click="$emit('close')"
         >
           <!-- <font-awesome-icon icon="xmark" class="w-6 h-6" /> -->
-          <i class="fa-solid fa-xmark w-10 h-10"></i>
+          <i class="fa-solid fa-xmark w-8 h-8 md:w-10 md:h-10"></i>
         </button>
       </div>
       <div class="pt-4 pb-2">

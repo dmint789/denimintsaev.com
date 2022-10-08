@@ -67,8 +67,8 @@
       <div class="dropdown-container">
         <MyHeader :size="2">Sort type</MyHeader>
         <select
-          :name="prefix('sorttype')"
-          :id="prefix('sorttype')"
+          :name="prefix('sort_type')"
+          :id="prefix('sort_type')"
           :value="getSortType(results)"
           @change="(e) => changeSortType({ results, value: e.target.value })"
           class="mt-4 w-full h-12 px-1 border-2 border-black text-xl"
@@ -108,19 +108,19 @@
         text="Show repeats"
         :checked="getRepeats()"
         :disabled="getSortType(true) !== 'textorder'"
-        @change="(value) => changeRepeats(value)"
+        @change="(val) => changeRepeats(val)"
       />
       <MyCheckbox
         :name="prefix('reversed')"
         text="Reversed"
         :checked="getReversed(results)"
-        @change="(value) => changeReversed({ results, value })"
+        @change="(val) => changeReversed({ results, value })"
       />
       <MyCheckbox
-        :name="prefix('negativefilter')"
+        :name="prefix('negative_filter')"
         text="Negative filter"
         :checked="getNegativeFilter(results)"
-        @change="(value) => changeNegativeFilter({ results, value })"
+        @change="(val) => changeNegativeFilter({ results, value })"
       />
     </div>
   </div>
@@ -154,7 +154,7 @@
     },
     methods: {
       prefix(input: string): string {
-        return (this.results ? 'results' : 'list') + input;
+        return `${this.results ? 'results' : 'list'}_${input}`;
       },
 
       ...mapActions([

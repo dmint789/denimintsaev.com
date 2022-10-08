@@ -8,7 +8,7 @@
       <MyButton white link="https://odysee.com/@denthebro:3" size="lg">Odysee</MyButton>
       <MyButton white link="https://worldcubeassociation.org/persons/2013MINT01" size="lg">WCA Profile</MyButton>
     </div>
-    <p class="par-center mt-8 text-white">Email: cube327@tuta.io</p>
+    <p class="mt-8 text-center text-white">Email: cube327@tuta.io</p>
   </PageSection>
 </template>
 

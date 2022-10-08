@@ -38,6 +38,6 @@
 
 <style lang="postcss" scoped>
   input {
-    @apply h-16 px-3 border-2 border-black text-xl;
+    @apply h-12 px-3 border-2 border-black focus:outline-none text-xl;
   }
 </style>

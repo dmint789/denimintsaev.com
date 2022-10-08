@@ -1,5 +1,5 @@
 <template>
-  <MyButton :white="selected" grayHover size="full" class="outline-1" @click="$emit('click')">
+  <MyButton size="full" grayHover :active="selected" @click="$emit('click')">
     <slot />
   </MyButton>
 </template>

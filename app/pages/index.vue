@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageSection :py="3" class="bg-yellow-400">
-      <p class="paragraph">
+      <p class="text-justify">
         This website is currently a work-in-progress. I am rebuilding it from the ground up, due to Wix stopping service
         for users based in Russia. The old website will be available through
         <NuxtLink to="https://dmintsaev.wixsite.com/website">this link</NuxtLink>
@@ -12,7 +12,7 @@
     </PageSection>
     <PageSection class="bg-mygray-900">
       <MyHeader :size="5" white>Hello!</MyHeader>
-      <p class="paragraph text-white">
+      <p class="text-justify text-white">
         My name is Deni and I come from Russia. My main activities include language learning, YouTube, speedcubing and
         music.<br /><br />
         Welcome to my personal website, where you can learn about what I do and follow my adventures in this strange
@@ -33,7 +33,7 @@
         />
         <div class="flex flex-col items-center">
           <MyHeader :size="4">Patreon</MyHeader>
-          <p class="paragraph pb-8">
+          <p class="text-justify pb-8">
             If you like what I do and would like to support my activities online, including my YouTube channel, my
             website and my music, feel free to become a Patreon supporter. Huge thanks to everyone, who has made a
             pledge, your contributions are greatly appreciated!

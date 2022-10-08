@@ -13,11 +13,11 @@
           </button>
         </div>
         <div class="flex-grow w-full pt-2 md:w-auto md:pt-0 md:flex md:justify-end md:items-center" v-if="menuVisible">
-          <MyButton noborder link="/">Home</MyButton>
-          <MyButton noborder link="/projects">Projects</MyButton>
-          <MyButton noborder link="/blog">Blog</MyButton>
-          <MyButton noborder link="/patreon">Patreon</MyButton>
-          <MyButton noborder link="/contact">Contact</MyButton>
+          <MyButton noBorder link="/">Home</MyButton>
+          <MyButton noBorder link="/projects">Projects</MyButton>
+          <MyButton noBorder link="/blog">Blog</MyButton>
+          <MyButton noBorder link="/patreon">Patreon</MyButton>
+          <MyButton noBorder link="/contact">Contact</MyButton>
         </div>
       </div>
     </nav>

@@ -13,9 +13,9 @@
   export default Vue.extend({
     name: 'MyButton',
     props: {
-      disabled: {
-        type: Boolean,
-        default: false,
+      size: {
+        type: String as () => 'sm' | 'md' | 'lg' | 'full' | 'any',
+        default: 'any',
       },
       white: {
         type: Boolean,
@@ -25,24 +25,28 @@
         type: Boolean,
         default: false,
       },
-      noborder: {
+      noBorder: {
         type: Boolean,
         default: false,
       },
-      size: {
-        type: String as () => 'sm' | 'md' | 'lg' | 'full' | 'any',
-        default: 'any',
-      },
       link: {
         type: String,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
+      active: {
+        type: Boolean,
+        default: false,
       },
     },
     computed: {
       getClasses() {
         let classes = '';
 
-        // For now the only use for noborder is in the nav bar, which needs to have smaller buttons
-        if (this.noborder) classes += 'h-12 px-2 ';
+        // For now the only use for noBorder is in the nav bar, which needs to have smaller buttons
+        if (this.noBorder) classes += 'h-12 px-2 ';
         else {
           switch (this.size) {
             case 'sm':
@@ -68,13 +72,19 @@
         if (this.disabled) classes += 'disabled ';
         else {
           if (this.white) {
-            classes += 'white ';
-            if (this.grayHover) classes += 'gray-hover ';
-            else classes += 'white-hover ';
+            if (this.active) classes += 'black ';
+            else {
+              classes += 'white ';
+              if (!this.grayHover) classes += 'white-hover ';
+              else classes += 'gray-hover ';
+            }
           } else {
-            classes += 'black ';
-            if (this.grayHover) classes += 'gray-hover ';
-            else classes += 'black-hover ';
+            if (this.active) classes += 'white ';
+            else {
+              classes += 'black ';
+              if (!this.grayHover) classes += 'black-hover ';
+              else classes += 'gray-hover ';
+            }
           }
         }
 
@@ -86,7 +96,7 @@
 
 <style lang="postcss" scoped>
   .button {
-    @apply box-content text-xl md:text-2xl transition-all;
+    @apply box-content focus:outline-none text-xl md:text-2xl transition-all;
   }
   .white {
     @apply text-black bg-white border-black;
