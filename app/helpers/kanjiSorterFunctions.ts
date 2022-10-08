@@ -140,7 +140,8 @@ export function hash(character: string): number | null {
       id -= 36522;
     } else {
       if (id <= 64047) return null;
-      id -= 36531;
+      else if (id <= 64106) id -= 36531;
+      else return null;
     }
 
     return id;
@@ -165,3 +166,4 @@ export function hash(character: string): number | null {
 // { start: 64035, end: 64035 }
 // { start: 64037, end: 64037 }
 // { start: 64039, end: 64047 }
+// last kanji index: 64106
