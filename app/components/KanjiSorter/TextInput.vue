@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modals -->
-    <KanjiSorterImportListModal v-if="isImportListOpen" @close="isImportListOpen = false" />
+    <KanjiSorterImportListModal v-if="isImportListOpen" @close="(list) => importList(list)" />
 
     <div class="mt-3 md:mt-4 flex justify-between md:grid md:grid-cols-3 items-center">
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
@@ -74,7 +74,7 @@
       return {
         inputBox: '',
         isInputNew: true,
-        isImportListOpen: true,
+        isImportListOpen: false,
       };
     },
     computed: {
@@ -100,6 +100,14 @@
       },
       onImportList() {
         this.isImportListOpen = !this.isImportListOpen;
+      },
+      importList(list: string) {
+        if (list) {
+          this.inputBox = list;
+          this.isInputNew = true;
+        }
+
+        this.isImportListOpen = false;
       },
 
       ...mapMutations(['setMode']),
