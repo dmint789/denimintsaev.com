@@ -25,6 +25,11 @@ module.exports = {
       },
     },
   },
+  // variants: {
+  //   extend: {
+  //     backgroundColor: ['active'],
+  //   },
+  // },
   css: ['~/assets/css/main.css', '~/assets/css/kanjiSorter.css'],
   plugins: [],
   purge: {

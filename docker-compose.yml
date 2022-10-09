@@ -35,5 +35,4 @@ networks:
   denimintsaev:
 volumes:
   db-data:
-    # Tells docker to create the storage for the volume on the local file system
     driver: local

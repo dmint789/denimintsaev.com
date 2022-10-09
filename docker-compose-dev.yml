@@ -4,9 +4,11 @@ services:
     container_name: dm-mongo
     image: mongo
     networks:
-      - denimintsaev
+      - dm-dev
     ports:
       - 127.0.0.1:27017:27017
+    volumes:
+      - dev-db-data:/data/db:rw
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongoadmindev
       - MONGO_INITDB_ROOT_PASSWORD=mongoadmindev123
@@ -16,7 +18,7 @@ services:
     container_name: dm-mongo-express
     image: mongo-express
     networks:
-      - denimintsaev
+      - dm-dev
     ports:
       - 127.0.0.1:8080:8081
     environment:
@@ -27,4 +29,8 @@ services:
       - mongo
     restart: unless-stopped
 networks:
-  denimintsaev:
+  dm-dev:
+volumes:
+  dev-db-data:
+    # Tells docker to create the storage for the volume on the local file system
+    driver: local

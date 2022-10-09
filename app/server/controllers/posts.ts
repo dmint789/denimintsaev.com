@@ -3,9 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import Post from '../models/post';
 
 const getAllPosts = (req: Request, res: Response) => {
-  console.log('Getting posts');
-
-  return res.status(200).json({ test: 'test1' });
+  console.log('Getting all posts');
 
   Post.find()
     .exec()
