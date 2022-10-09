@@ -194,8 +194,9 @@ export const actions = {
   addToList({ dispatch }: any) {
     dispatch('sortKanjiList', true);
   },
+  // add is true when we're adding more characters to the list, as opposed to resorting the existing list
   sortKanjiList({ state, commit, dispatch }: any, add = false) {
-    if (state.uniqueKanji > 0) {
+    if (state.uniqueKanji > 0 || !add) {
       const input = (
         add ? [...state.kanjiList.original, ...state.workingList.allFiltered] : state.kanjiList.original
       ) as Array<number>;
