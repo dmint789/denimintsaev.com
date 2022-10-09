@@ -45,3 +45,20 @@ export interface IKanjiOnly {
   sorted: string;
   unsorted: string;
 }
+
+// Interface for the kanji lists object
+// The names of the properties here are all the same as the values of the ImportType enum
+export interface IKanjiLists {
+  newspapers: string;
+  novels: string;
+  strokecount: string;
+  jlpt: {
+    n5: string;
+    n4: string;
+    n3: string;
+    n2: string;
+    n1: string;
+  };
+  joyo: string;
+  all: string;
+}

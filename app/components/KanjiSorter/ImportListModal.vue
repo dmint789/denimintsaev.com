@@ -1,7 +1,7 @@
 <template>
   <Modal title="Select list to import" size="sm" @close="$emit('close')">
     <div class="flex flex-col items-center">
-      <div class="w-full max-w-lg mx-auto px-3 flex flex-col gap-2 md:gap-3">
+      <div class="w-full max-w-lg mx-auto px-3 flex flex-col items-center gap-2 md:gap-3">
         <SelectionButton @click="changeSel('newspapers')" :selected="selected === 'newspapers'">
           Kanji by frequency of use in newspapers
         </SelectionButton>
@@ -33,40 +33,45 @@
             text="Inclusive"
             :checked="inclusive"
             :disabled="jlptLevel === 'n5'"
-            @change="(val) => (inclusive = val)"
+            @change="(val) => changeInclusive(val)"
           />
         </div>
-        <SelectionButton @click="changeSel('joyo')" :selected="selected === 'joyo'"> Jōyō kanji list </SelectionButton>
-        <SelectionButton @click="changeSel('all')" :selected="selected === 'all'"> Full kanji library </SelectionButton>
-        <div class="input-row mt-2 md:mt-3">
-          <div class="flex flex-col items-center gap-2">
-            <h4># of characters:</h4>
-            <p class="big-p">Max: {{ maxChars }}</p>
+        <SelectionButton @click="changeSel('joyo')" :selected="selected === 'joyo'">
+          Jōyō kanji list
+        </SelectionButton>
+        <SelectionButton @click="changeSel('all')" :selected="selected === 'all'">
+          Full kanji library
+        </SelectionButton>
+        <h4 v-if="isStaticList()" class="mt-3"># of characters: {{ maxChars }}</h4>
+        <template v-else>
+          <div class="input-row my-2">
+            <div class="flex flex-col items-center gap-2">
+              <h4># of characters:</h4>
+              <p class="big-p">Max: {{ maxChars }}</p>
+            </div>
+            <NumberInput
+              name="max_chars"
+              placeholder="All"
+              :value="chars"
+              @change="(val) => (chars = val)"
+              :default="maxChars"
+              :min="1"
+              :max="maxChars"
+              integer
+              class="w-28"
+            />
           </div>
-          <NumberInput
-            name="max_chars"
-            placeholder="All"
-            :value="chars"
-            @change="(val) => (chars = val)"
-            :default="maxChars"
-            :min="1"
-            :max="maxChars"
-            integer
+          <MyCheckbox
+            name="importreversed"
+            text="Reversed"
             :disabled="isStaticList()"
-            class="w-28"
+            :checked="reversed"
+            @change="(val) => (reversed = val)"
           />
-        </div>
+        </template>
       </div>
 
-      <MyCheckbox
-        name="importreversed"
-        text="Reversed"
-        :disabled="isStaticList()"
-        :checked="reversed"
-        @change="(val) => (reversed = val)"
-        class="my-4 md:my-6"
-      />
-      <MyButton size="md" @click="onImport">Import</MyButton>
+      <MyButton size="md" @click="onImport" class="mt-6">Import</MyButton>
     </div>
   </Modal>
 </template>
@@ -74,20 +79,13 @@
 <script lang="ts">
   import Vue from 'vue';
   import { ImportType } from '~/helpers/enums/importType';
+  import { IKanjiLists } from '~/helpers/interfaces/kanji';
 
   export default Vue.extend({
     name: 'ImportListModal',
     data() {
       return {
-        // The names of these list variables are all the same as the values of the ImportType enum
-        lists: {
-          newspapers: '',
-          novels: '',
-          strokecount: '',
-          jlpt: {},
-          joyo: '',
-          all: '',
-        },
+        lists: {} as IKanjiLists,
         selected: ImportType.Newspapers,
         jlptLevel: 'n5',
         inclusive: false,
@@ -97,13 +95,7 @@
       };
     },
     async created() {
-      this.lists.newspapers = await this.$axios.$get('/api/static/newspaper_sort_kanji.txt');
-      this.lists.novels = await this.$axios.$get('/api/static/novel_sort_kanji.txt');
-      this.lists.strokecount = await this.$axios.$get('/api/static/kanji_by_stroke_count.txt');
-      this.lists.jlpt = await this.$axios.$get('/api/static/jlpt_kanji.json');
-      this.lists.joyo = await this.$axios.$get('/api/static/joyo_kanji.txt');
-      this.lists.all = await this.$axios.$get('/api/static/all_kanji.txt');
-
+      this.lists = this.$store.getters.getKanjiLists();
       this.changeSel(this.selected);
     },
     methods: {
@@ -124,6 +116,10 @@
         if (!this.isStaticList()) this.chars = this.maxChars;
         else this.chars = null;
       },
+      changeInclusive(newInclusive: boolean) {
+        this.inclusive = newInclusive;
+        this.updateMaxChars();
+      },
       updateMaxChars() {
         switch (this.selected) {
           case ImportType.Newspapers:
@@ -136,7 +132,14 @@
             this.maxChars = this.lists.strokecount.length;
             break;
           case ImportType.JLPT:
-            this.maxChars = this.lists.jlpt[this.jlptLevel].length;
+            if (!this.inclusive) {
+              this.maxChars = this.lists.jlpt[this.jlptLevel].length;
+            } else {
+              let tempMaxChars = 0;
+              for (let i = 5; i >= parseInt(this.jlptLevel[1]); i--)
+                tempMaxChars += this.lists.jlpt[`n${i}`].length;
+              this.maxChars = tempMaxChars;
+            }
             break;
           case ImportType.Joyo:
             this.maxChars = this.lists.joyo.length;
@@ -153,16 +156,16 @@
 
         if (this.isStaticList()) {
           if (this.selected !== ImportType.JLPT) importList = this.lists[this.selected];
-          else {
-            for (let i = 5; i >= parseInt(this.jlptLevel[1]); i--) {
+          else if (!this.inclusive) {
+            importList = this.lists.jlpt[this.jlptLevel];
+          } else {
+            for (let i = 5; i >= parseInt(this.jlptLevel[1]); i--)
               importList += this.lists.jlpt[`n${i}`] + '\n\n';
-            }
           }
         } else {
           if (this.reversed) importList = this.lists[this.selected].split('').reverse().join('');
           else importList = this.lists[this.selected];
 
-          console.log(this.chars);
           importList = importList.slice(0, this.chars);
         }
 
@@ -174,6 +177,6 @@
 
 <style lang="postcss" scoped>
   .input-row {
-    @apply flex justify-around items-center md:justify-center md:gap-10;
+    @apply w-full flex justify-around items-center md:justify-center md:gap-10;
   }
 </style>

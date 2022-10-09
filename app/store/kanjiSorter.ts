@@ -1,12 +1,20 @@
 import { getCompareFunc, isSortable, isInFilter, hash } from '~/helpers/kanjiSorterFunctions';
 import { KanjiLinkedList, ListNode } from '~/helpers/sortedLinkedList';
-import { IKanjiDB, IKanji, IKanjiListEntry, IKanjiMin, IKanjiOnly } from '~/helpers/interfaces/kanji';
+import {
+  IKanjiDB,
+  IKanji,
+  IKanjiListEntry,
+  IKanjiMin,
+  IKanjiOnly,
+  IKanjiLists,
+} from '~/helpers/interfaces/kanji';
 import { SortType } from '~/helpers/enums/sortType';
 import { FilterType } from '~/helpers/enums/filterType';
 
 export const state = () => ({
   // Data for all kanji
   kanjiData: [] as Array<IKanjiDB>,
+  kanjiLists: {} as IKanjiLists,
   workingList: {
     // Original list of kanji indices (INCLUDING repeats and ignoring the filter)
     original: [] as Array<number>,
@@ -130,10 +138,12 @@ export const getters = {
       else return state.kanjiListSettings.negativeFilter;
     },
   getUpdate: (state: any) => (): boolean => state.resultsSettings.update,
+  getKanjiLists: (state: any) => (): IKanjiLists => state.kanjiLists,
 };
 
 export const mutations = {
   setKanjiData: (state: any, data: Array<IKanjiDB>) => (state.kanjiData = data),
+  setKanjiLists: (state: any, data: IKanjiLists) => (state.kanjiLists = data),
   setOriginal: (state: any, data: Array<number>) => (state.workingList.original = data),
   setSortedList: (state: any, data: Array<IKanji>) => (state.workingList.sorted = data),
   setUnsortedList: (state: any, data: Array<IKanji>) => (state.workingList.unsorted = data),
@@ -301,7 +311,9 @@ export const actions = {
           } else if (kanjiOccurrences[id] === 1) {
             if (isSortable(kanji, sortType)) {
               tempSorted.addToList(id);
-            } else if (isInFilter(kanji, filterType, state.resultsSettings.negativeFilter, state.kanjiList.list[id])) {
+            } else if (
+              isInFilter(kanji, filterType, state.resultsSettings.negativeFilter, state.kanjiList.list[id])
+            ) {
               tempUnsorted.push({
                 ...kanji,
                 occurrences: kanjiOccurrences[id],
@@ -333,7 +345,14 @@ export const actions = {
       const setNextKanji = (kanjiId: number, repeat: boolean) => {
         let fullKanji = state.kanjiData[kanjiId];
 
-        if (isInFilter(fullKanji, filterType, state.resultsSettings.negativeFilter, state.kanjiList.list[kanjiId])) {
+        if (
+          isInFilter(
+            fullKanji,
+            filterType,
+            state.resultsSettings.negativeFilter,
+            state.kanjiList.list[kanjiId],
+          )
+        ) {
           if (!repeat) {
             tempUniqueKanji++;
             tempAllFiltered.push(kanjiId);
@@ -349,7 +368,8 @@ export const actions = {
       };
 
       if (sortType === SortType.TextOrder) {
-        for (let i = 0; i < tempTextSorted.length; i++) setNextKanji(tempTextSorted[i].i, tempTextSorted[i].repeat);
+        for (let i = 0; i < tempTextSorted.length; i++)
+          setNextKanji(tempTextSorted[i].i, tempTextSorted[i].repeat);
       } else if (tempSorted.length > 0) {
         let pointer = tempSorted.head as ListNode<number>;
 
@@ -427,7 +447,10 @@ export const actions = {
       if (state.resultsSettings.update) dispatch('sortKanjiList');
     }
   },
-  changeSortType({ state, commit, dispatch }: any, { results, value }: { results: boolean; value: SortType }) {
+  changeSortType(
+    { state, commit, dispatch }: any,
+    { results, value }: { results: boolean; value: SortType },
+  ) {
     if (results) {
       commit('setSortType', value);
       if (state.resultsSettings.update) dispatch('sortWorkingList');
@@ -436,7 +459,10 @@ export const actions = {
       if (state.resultsSettings.update) dispatch('sortKanjiList');
     }
   },
-  changeFilterType({ state, commit, dispatch }: any, { results, value }: { results: boolean; value: FilterType }) {
+  changeFilterType(
+    { state, commit, dispatch }: any,
+    { results, value }: { results: boolean; value: FilterType },
+  ) {
     if (results) {
       commit('setFilterType', value);
       if (state.resultsSettings.update) dispatch('sortWorkingList');
@@ -445,7 +471,10 @@ export const actions = {
       if (state.resultsSettings.update) dispatch('sortKanjiList');
     }
   },
-  changeNegativeFilter({ state, commit, dispatch }: any, { results, value }: { results: boolean; value: boolean }) {
+  changeNegativeFilter(
+    { state, commit, dispatch }: any,
+    { results, value }: { results: boolean; value: boolean },
+  ) {
     if (results) {
       commit('setNegativeFilter', value);
       if (state.resultsSettings.update) dispatch('sortWorkingList');
