@@ -14,7 +14,7 @@
     name: 'MyButton',
     props: {
       size: {
-        type: String as () => 'sm' | 'md' | 'lg' | 'full' | 'any',
+        type: String as () => 'xs' | 'sm' | 'md' | 'lg' | 'full' | 'any',
         default: 'any',
       },
       white: {
@@ -49,6 +49,9 @@
         if (this.noBorder) classes += 'h-12 px-2 ';
         else {
           switch (this.size) {
+            case 'xs':
+              classes += 'w-24 ';
+              break;
             case 'sm':
               classes += 'w-32 ';
               break;

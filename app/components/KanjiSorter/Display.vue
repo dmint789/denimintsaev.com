@@ -16,7 +16,12 @@
             </tr>
           </thead>
           <tbody>
-            <KanjiRow v-for="(k, index) in getSorted(results)" :key="index + 1" :kanji="k" :showAll="getRepeats()" />
+            <KanjiRow
+              v-for="(k, index) in getSorted(results)"
+              :key="index + 1"
+              :kanji="k"
+              :showAll="getRepeats()"
+            />
             <tr v-if="getUnsorted(results).length > 0">
               <th colspan="8" class="py-2 border-t-2 border-b-2">Unsorted</th>
             </tr>
@@ -101,7 +106,7 @@
         </select>
       </div>
     </div>
-    <div class="mb-6 flex justify-around items-center gap-4">
+    <div class="mb-6 flex flex-wrap justify-around items-center gap-4">
       <MyCheckbox
         v-if="results"
         :name="prefix('repeats')"

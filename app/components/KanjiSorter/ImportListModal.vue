@@ -47,7 +47,7 @@
           <div class="input-row my-2">
             <div class="flex flex-col items-center gap-2">
               <h4># of characters:</h4>
-              <p class="big-p">Max: {{ maxChars }}</p>
+              <p class="big-p hidden md:block">Max: {{ maxChars }}</p>
             </div>
             <NumberInput
               name="max_chars"
@@ -62,7 +62,7 @@
             />
           </div>
           <MyCheckbox
-            name="importreversed"
+            name="import_reversed"
             text="Reversed"
             :disabled="isStaticList()"
             :checked="reversed"
@@ -71,7 +71,7 @@
         </template>
       </div>
 
-      <MyButton size="md" @click="onImport" class="mt-6">Import</MyButton>
+      <MyButton size="md" @click="onImport" class="mt-4 md:mt-6">Import</MyButton>
     </div>
   </Modal>
 </template>
@@ -177,6 +177,6 @@
 
 <style lang="postcss" scoped>
   .input-row {
-    @apply w-full flex justify-around items-center md:justify-center md:gap-10;
+    @apply w-full flex flex-wrap justify-around items-center gap-3 md:justify-center md:gap-10;
   }
 </style>
