@@ -1,22 +1,23 @@
 <template>
   <div>
+    <KanjiSorterAboutModal v-if="isAboutOpen" @close="isAboutOpen = false" />
     <KanjiSorterImportListModal v-if="isImportListOpen" @close="(list) => importList(list)" />
 
     <div class="mt-3 md:mt-4 flex flex-wrap justify-between items-center gap-3 md:grid md:grid-cols-3">
       <MyHeader :size="3" class="md:col-start-2">Enter Text</MyHeader>
       <div class="h-14 flex justify-end items-center gap-2">
-        <MyButton @click="onClickAbout" disabled size="xs">About</MyButton>
-        <a href="https://www.patreon.com/denimintsaev" class="flex-shrink-0 h-full">
+        <MyButton @click="isAboutOpen = true" size="xs">About</MyButton>
+        <a href="https://www.patreon.com/denimintsaev" target="_blank" class="flex-shrink-0 h-full">
           <img src="~/static/patreon_logo.png" alt="Patreon Logo" class="h-full" />
         </a>
       </div>
     </div>
     <textarea
-      name="inputtext"
+      name="input_text"
       placeholder="Enter text here"
       v-model="inputBox"
       @change="onUpdateInput"
-      class="big-input-output-box h-80 my-4"
+      class="big-input-output-box h-80 my-4 text-xl md:text-2xl"
     ></textarea>
     <div class="custom-grid gap-2 md:gap-4">
       <MyButton @click="onGetKanji" size="md" class="w-full">Get kanji</MyButton>
@@ -72,6 +73,7 @@
       return {
         inputBox: '',
         isInputNew: true,
+        isAboutOpen: false,
         isImportListOpen: false,
       };
     },
@@ -81,9 +83,6 @@
     methods: {
       onUpdateInput() {
         this.isInputNew = true;
-      },
-      onClickAbout() {
-        console.log('About');
       },
       onGetKanji(newK = false) {
         if (this.inputBox && (this.getMode === 'add' || this.isInputNew)) {

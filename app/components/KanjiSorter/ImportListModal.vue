@@ -44,7 +44,7 @@
         </SelectionButton>
         <h4 v-if="isStaticList()" class="mt-3"># of characters: {{ maxChars }}</h4>
         <template v-else>
-          <div class="input-row my-2">
+          <div class="input-row my-1 md:my-2">
             <div class="flex flex-col items-center gap-2">
               <h4># of characters:</h4>
               <p class="big-p hidden md:block">Max: {{ maxChars }}</p>
@@ -71,7 +71,7 @@
         </template>
       </div>
 
-      <MyButton size="md" @click="onImport" class="mt-4 md:mt-6">Import</MyButton>
+      <MyButton size="md" @click="onImport" class="mt-3 md:mt-6">Import</MyButton>
     </div>
   </Modal>
 </template>

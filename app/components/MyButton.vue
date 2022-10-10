@@ -1,5 +1,11 @@
 <template>
-  <a v-if="link" :href="link" class="button flex justify-center items-center" :class="getClasses">
+  <a
+    v-if="link"
+    :href="link"
+    :target="external ? '_blank' : '_self'"
+    class="button flex justify-center items-center"
+    :class="getClasses"
+  >
     <slot />
   </a>
   <button v-else @click="$emit('click')" :disabled="disabled" class="button" :class="getClasses">
@@ -25,12 +31,17 @@
         type: Boolean,
         default: false,
       },
+      // For now the only use for noBorder is in the nav bar, which needs to have smaller buttons
       noBorder: {
         type: Boolean,
         default: false,
       },
       link: {
         type: String,
+      },
+      external: {
+        type: Boolean,
+        default: false,
       },
       disabled: {
         type: Boolean,
@@ -45,7 +56,6 @@
       getClasses() {
         let classes = '';
 
-        // For now the only use for noBorder is in the nav bar, which needs to have smaller buttons
         if (this.noBorder) classes += 'h-12 px-2 ';
         else {
           switch (this.size) {

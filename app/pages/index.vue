@@ -38,7 +38,7 @@
             channel, my website and my music, feel free to become a Patreon supporter. Huge thanks to
             everyone, who has made a pledge, your contributions are greatly appreciated!
           </p>
-          <MyButton size="lg" link="https://www.patreon.com/denimintsaev">Support</MyButton>
+          <MyButton size="lg" link="https://www.patreon.com/denimintsaev" external>Support</MyButton>
         </div>
       </div>
     </PageSection>
@@ -84,7 +84,7 @@
               setTimeout(() => {
                 this.buttonClicks = res.clicks;
                 this.buttonDisabled = false;
-              }, 600);
+              }, 300);
             })
             .catch((err: any) => {
               console.log(err);
@@ -96,10 +96,6 @@
 </script>
 
 <style lang="postcss" scoped>
-  a {
-    @apply text-mygray-700 hover:text-mygray-500;
-  }
-
   .counting-button {
     @apply w-40 h-40 mt-4 mb-6 md:mt-7 md:mb-10 rounded-full outline-none bg-white hover:bg-mygray-100;
 

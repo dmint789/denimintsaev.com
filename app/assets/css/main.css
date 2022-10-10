@@ -23,6 +23,10 @@ p.big-p {
   @apply text-xl md:text-2xl;
 }
 
+p > a {
+  @apply text-mygray-700 hover:text-mygray-500;
+}
+
 label {
   @apply text-xl md:text-2xl;
 }
@@ -30,6 +34,14 @@ label {
 /* This styling is very similar to the styling of NumberInput */
 select {
   @apply h-12 px-2 border-2 border-black focus:outline-none text-xl;
+}
+
+.page-section {
+  @apply mx-auto px-3 w-full max-w-screen-lg;
+}
+
+.page-section > p {
+  @apply text-base md:text-lg;
 }
 
 .items-column {

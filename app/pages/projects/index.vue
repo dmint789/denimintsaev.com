@@ -3,8 +3,8 @@
     <MyHeader :size="5" white>Projects</MyHeader>
     <div class="items-column">
       <MyButton white size="md" link="/kanjisorter">Kanji Sorter</MyButton>
-      <MyButton white size="md" link="https://denthebro.itch.io/red-octagon">Red Octagon</MyButton>
-      <MyButton white size="md" link="/api/static/pll_bingo.jpg">PLL Bingo</MyButton>
+      <MyButton white size="md" link="https://denthebro.itch.io/red-octagon" external>Red Octagon</MyButton>
+      <MyButton white size="md" link="/api/static/pll_bingo.jpg" external>PLL Bingo</MyButton>
     </div>
   </PageSection>
 </template>

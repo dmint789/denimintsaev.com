@@ -1,5 +1,5 @@
 <template>
-  <MyButton size="full" grayHover :active="selected" @click="$emit('click')">
+  <MyButton :size="size" grayHover :active="selected" @click="$emit('click')">
     <slot />
   </MyButton>
 </template>
@@ -10,6 +10,10 @@
   export default Vue.extend({
     name: 'SelectionButton',
     props: {
+      size: {
+        type: String,
+        default: 'full',
+      },
       selected: {
         type: Boolean,
         default: false,

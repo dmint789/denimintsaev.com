@@ -31,11 +31,11 @@
       </div>
       <textarea
         v-else
-        name="resulttext"
+        name="result_text"
         placeholder="Result"
         :value="getKanjiOnly(results)"
         disabled
-        class="big-input-output-box h-full resize-none"
+        class="big-input-output-box h-full resize-none text-xl md:text-2xl"
       >
       </textarea>
     </div>
