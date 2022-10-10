@@ -81,8 +81,10 @@
           this.$axios
             .$post('/api/increment_counter')
             .then((res: any) => {
-              this.buttonClicks = res.clicks;
-              this.buttonDisabled = false;
+              setTimeout(() => {
+                this.buttonClicks = res.clicks;
+                this.buttonDisabled = false;
+              }, 600);
             })
             .catch((err: any) => {
               console.log(err);
