@@ -78,13 +78,14 @@
       async onButtonClick() {
         if (!this.buttonDisabled) {
           this.buttonDisabled = true;
+          
           this.$axios
             .$post('/api/increment_counter')
             .then((res: any) => {
               setTimeout(() => {
                 this.buttonClicks = res.clicks;
                 this.buttonDisabled = false;
-              }, 300);
+              }, 200);
             })
             .catch((err: any) => {
               console.log(err);
