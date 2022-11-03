@@ -1,7 +1,11 @@
 <template>
   <tr v-if="show" class="table-data">
     <td>{{ kanji.index > 0 ? kanji.index : '' }}</td>
-    <td>{{ kanji.c }}</td>
+    <td>
+      <a :href="`https://jisho.org/search/${kanji.c}%20%23kanji`" target="_blank" class="kanji">{{
+        kanji.c
+      }}</a>
+    </td>
     <td v-if="kanji.occurrences">{{ kanji.occurrences }}</td>
     <td>{{ kanji.p ? `#${kanji.p}` : 'N/A' }}</td>
     <td>{{ kanji.v ? `#${kanji.v}` : 'N/A' }}</td>
@@ -37,4 +41,16 @@
   });
 </script>
 
-<style lang="postcss" scoped></style>
+<style lang="postcss" scoped>
+  .kanji {
+    color: rgb(13, 94, 255);
+  }
+
+  .kanji:hover {
+    color: rgb(119, 155, 255);
+  }
+
+  .kanji:active {
+    color: rgb(181, 201, 255);
+  }
+</style>

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+git tag &&
 echo "Please give the new version tag:" && read NEW_VERSION
 
 if [ -z $1 ] || [ $1 != 'nogit' ]; then
