@@ -3,34 +3,27 @@ import myFetch from '~/composables/myFetch';
 
 useHead({ title: "Home | Deni's Site" });
 
-const buttonDisabled = ref(true);
-const buttonClicks = ref(0);
+const { data } = await myFetch('/get_collective_clicks');
 
-myFetch('/get_collective_clicks')
-  .then((res: any) => {
-    buttonClicks.value = res.clicks;
-    buttonDisabled.value = false;
-  })
-  .catch((err: Error) => {
-    throw err;
-  });
+const buttonClicks = ref(0);
+const buttonDisabled = ref();
+
+watchEffect(() => {
+  buttonClicks.value = data.value.clicks;
+  buttonDisabled.value = false;
+});
 
 const onButtonClick = async () => {
   if (!buttonDisabled.value) {
     buttonDisabled.value = true;
 
-    myFetch('/increment_counter', {
-      method: 'POST',
-    })
-      .then((res: any) => {
-        setTimeout(() => {
-          buttonClicks.value = res.clicks;
-          buttonDisabled.value = false;
-        }, 200);
-      })
-      .catch((err: Error) => {
-        throw err;
-      });
+    setTimeout(async () => {
+      data.value = (
+        await myFetch('/increment_counter', {
+          method: 'POST',
+        })
+      ).data.value;
+    }, 200);
   }
 };
 </script>
