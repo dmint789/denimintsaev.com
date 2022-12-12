@@ -8,17 +8,10 @@ import Random from './models/random';
 
 const app = express();
 
-console.log('Environment:', process.env.NODE_ENV);
-
 // Middleware
-// This one is temporary
-app.use((req, res, next) => {
-  console.log(req.hostname);
-  next();
-});
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(cors({ origin: 'https://denimintsaev.com' }));
+  app.use(cors({ origin: ['https://denimintsaev.com', 'https://www.denimintsaev.com'] }));
 } else {
   app.use(cors());
 }
