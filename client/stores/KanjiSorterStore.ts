@@ -115,8 +115,8 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
         }
 
         // One iteration of the loop that takes the id of the character that needs to be added
-        const loop = (id: number) => {
-          if (!newK || !this.kanjiList.list[id]) {
+        const loop = (id: number, readd = false) => {
+          if (!newK || readd || !this.kanjiList.list[id]) {
             let kanji = this.kanjiData[id];
             tempOriginal.push(id);
 
@@ -149,14 +149,20 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
 
         // If we're in add mode or the input is empty, go through all of the previously
         // added characters, while keeping the list sorted
-        if (this.mode === 'add' || !input)
-          for (let i = 0; i < this.results.original.length; i++) loop(this.results.original[i]);
+        if (this.mode === 'add' || !input) {
+          for (let i = 0; i < this.results.original.length; i++) {
+            loop(this.results.original[i], true);
+          }
+        }
 
         // Iterate through the input and add all kanji to the list while keeping it sorted
         for (let i = 0; i < input.length; i++) {
-          let id = hash(input[i]) as number;
+          const id = hash(input[i]) as number;
+
           // If the hash function didn't return null, that means the character is a kanji
-          if (id !== null) loop(id);
+          if (id !== null) {
+            loop(id);
+          }
         }
 
         // Save the sorted list into an array ready for display while filtering it and assigning indices
