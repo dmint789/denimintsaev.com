@@ -65,7 +65,7 @@ const onButtonClick = async () => {
             channel, my website and my music, feel free to become a Patreon supporter. Huge thanks to
             everyone, who has made a pledge, your contributions are greatly appreciated!
           </p>
-          <MyButton size="lg" link="https://patreon.com/denimintsaev" external>Support</MyButton>
+          <MyButton size="lg" link="/patreon">Support</MyButton>
         </div>
       </div>
     </PageSection>

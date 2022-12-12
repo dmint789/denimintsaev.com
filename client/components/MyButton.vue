@@ -49,7 +49,7 @@ const classForSize = computed((): string => {
 </script>
 
 <template>
-  <a
+  <NuxtLink
     :href="link"
     :target="link && link[0] !== '/' ? '_blank' : '_self'"
     :disabled="disabled"
@@ -65,7 +65,7 @@ const classForSize = computed((): string => {
     @click="$emit('click')"
   >
     <slot />
-  </a>
+  </NuxtLink>
 </template>
 
 <style lang="postcss" scoped>
