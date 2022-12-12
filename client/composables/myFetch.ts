@@ -1,7 +1,9 @@
 export default (request, options?) => {
   const config = useRuntimeConfig();
 
-  return $fetch(request, { baseURL: config.public.apiBase, ...options }).catch((error: Error) => {
+  const baseURL = process.client ? config.public.apiBase : 'http://localhost:5000/api';
+
+  return $fetch(request, { baseURL, ...options }).catch((error: Error) => {
     throw error;
   });
 };
