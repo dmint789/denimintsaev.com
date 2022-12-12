@@ -6,8 +6,8 @@ COPY client /home/app
 
 WORKDIR /home/app
 
-# Nuxt host, port & base URL
-ENV HOST=0.0.0.0
+# Nuxt host & port
+ENV HOST='https://denimintsaev.com/'
 ENV PORT=3000
 # API base URL (my own variable)
 ENV API_BASE_URL='https://denimintsaev.com/api/'

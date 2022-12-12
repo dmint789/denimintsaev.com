@@ -6,8 +6,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Keys within public are also exposed client-side
     public: {
+      // The fallback is for development
       apiBase: process.env.API_BASE_URL || 'http://localhost:5000/api',
-      // apiKey: process.env.API_KEY || '123',
     },
   },
   telemetry: false,
