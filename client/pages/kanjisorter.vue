@@ -19,6 +19,7 @@ const ksS = useKanjiSorterStore();
 
 ksS.kanjiData = (await myFetch('/kanji_data.json')).data.value as IKanjiDB[];
 ksS.kanjiLists = (await myFetch('/kanji_lists.json')).data.value as IKanjiLists;
+// console.log(ksS.kanjiData);
 
 if (process.client) {
   const tempKanjiList = JSON.parse(localStorage.getItem('kanji-list') || '{}');
