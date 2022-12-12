@@ -282,8 +282,7 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
         this.kanjiList.list = tempList;
 
         if (this.kanjiListSettings.reversed) this.changeSortingDirection();
-        if (this.kanjiListSettings.filterType === FilterType.List && this.kanjiListSettings.update)
-          this.sortResults();
+        if (this.kanjiListSettings.filterType === FilterType.List && this.update) this.sortResults();
 
         // Save list to local storage
         if (process.client) {

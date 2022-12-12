@@ -53,7 +53,7 @@ const onChangeView = (value: ViewType) => {
         v-else
         name="result_text"
         placeholder="Result"
-        :value="ksS[listType].kanjiOnly"
+        :value="ksS.getKanjiOnly(listType)"
         disabled
         class="big-input-output-box h-full resize-none text-xl md:text-2xl"
       >
@@ -132,7 +132,7 @@ const onChangeView = (value: ViewType) => {
         :name="`${listType}_repeats`"
         text="Show repeats"
         :checked="ksS.resultsSettings.repeats"
-        :disabled="ksS.results.sortType !== 'textorder'"
+        :disabled="ksS.resultsSettings.sortType !== 'textorder'"
         @change="(val) => ksS.changeRepeats(val)"
       />
       <MyCheckbox
