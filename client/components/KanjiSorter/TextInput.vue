@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useKanjiSorterStore } from '~~/stores/KanjiSorterStore';
+import { useKanjiSorterStore } from '~/stores/KanjiSorterStore';
 import { Mode } from '~/helpers/enums/index';
 
 const ksS = useKanjiSorterStore();
 
 const inputBox = ref('');
 const isInputNew = ref(true);
+const lastNewK = ref<boolean>(null);
 const isAboutOpen = ref(false);
 const isImportListOpen = ref(false);
 
@@ -14,12 +15,15 @@ const onUpdateInput = () => {
 };
 
 const onGetKanji = (newK = false) => {
-  if (inputBox.value && (ksS.mode === Mode.Add || isInputNew.value)) {
+  // Check that the input isn't empty and that we are adding kanji or something has changed since last time
+  if (inputBox.value && (ksS.mode === Mode.Add || isInputNew.value || newK !== lastNewK.value)) {
     ksS.sortResults(inputBox.value, newK);
 
+    lastNewK.value = newK;
     if (ksS.mode === Mode.Replace) isInputNew.value = false;
   }
 };
+
 const onClear = () => {
   inputBox.value = '';
   isInputNew.value = true;
@@ -77,7 +81,7 @@ const onModeChange = (value: Mode) => {
           <line x1="25" y1="1" x2="25" y2="80" style="stroke: black; stroke-width: 2" />
         </svg>
       </div>
-      <MyButton @click="() => onGetKanji(true)" size="md" class="z-10 w-full">Get new kanji</MyButton>
+      <MyButton @click="onGetKanji(true)" size="md" class="z-10 w-full">Get new kanji</MyButton>
       <MyButton @click="onClear" size="md" class="w-full">Clear</MyButton>
       <MyButton @click="onImportList" size="md" class="w-full">Import list</MyButton>
       <div
