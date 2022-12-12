@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   mongo:
     container_name: dm-mongo
@@ -18,18 +18,30 @@ services:
       - MONGO_DEV_PASSWORD=$MONGO_DEV_PASSWORD
       - MONGO_INITDB_DATABASE=denimintsaev
     restart: always
-  dm-server:
-    container_name: denimintsaev
-    image: denimint/denimintsaev.com
+  dm-api:
+    container_name: denimintsaev-api
+    image: denimint/denimintsaev.com-api
+    networks:
+      - denimintsaev
+    ports:
+      - 127.0.0.1:5000:5000
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://$MONGO_DEV_USERNAME:$MONGO_DEV_PASSWORD@dm-mongo:27017/denimintsaev
+    depends_on:
+      - mongo
+    restart: always
+  dm-client:
+    container_name: denimintsaev-client
+    image: denimint/denimintsaev.com-client
     networks:
       - denimintsaev
     ports:
       - 127.0.0.1:3000:3000
-      - 127.0.0.1:5000:5000
     environment:
-      - MONGODB_URI=mongodb://$MONGO_DEV_USERNAME:$MONGO_DEV_PASSWORD@dm-mongo:27017/denimintsaev
     depends_on:
       - mongo
+      - dm-api
     restart: always
 networks:
   denimintsaev:

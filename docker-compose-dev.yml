@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   mongo:
     container_name: dm-mongo
@@ -25,6 +25,18 @@ services:
       - ME_CONFIG_MONGODB_SERVER=dm-mongo
       - ME_CONFIG_MONGODB_AUTH_USERNAME=mongoadmindev
       - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongoadmindev123
+    depends_on:
+      - mongo
+    restart: unless-stopped
+  dm-api:
+    container_name: denimintsaev-api
+    image: denimintsaev-api
+    networks:
+      - dm-dev
+    ports:
+      - 127.0.0.1:5000:5000
+    environment:
+      - MONGODB_URI=mongodb://mongoadmindev:mongoadmindev123@dm-mongo:27017/admin
     depends_on:
       - mongo
     restart: unless-stopped

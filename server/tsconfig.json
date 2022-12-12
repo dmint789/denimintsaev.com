@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    }
+    // "types": ["@types/node", "@types/express", "@types/cors"]
+  },
+  "exclude": ["node_modules", ".vscode", "dist"]
+}
