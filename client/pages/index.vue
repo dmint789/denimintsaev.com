@@ -3,26 +3,27 @@ import myFetch from '~/composables/myFetch';
 
 useHead({ title: "Home | Deni's Site" });
 
-const { data } = await myFetch('/get_collective_clicks');
-
 const buttonClicks = ref(0);
-const buttonDisabled = ref();
+const buttonDisabled = ref(true);
 
-watchEffect(() => {
-  buttonClicks.value = data.value.clicks;
-  buttonDisabled.value = false;
-});
+if (process.client) {
+  myFetch('/get_collective_clicks').then((res: any) => {
+    buttonClicks.value = res.clicks;
+    buttonDisabled.value = false;
+  });
+}
 
 const onButtonClick = async () => {
   if (!buttonDisabled.value) {
     buttonDisabled.value = true;
 
-    setTimeout(async () => {
-      data.value = (
-        await myFetch('/increment_counter', {
-          method: 'POST',
-        })
-      ).data.value;
+    setTimeout(() => {
+      myFetch('/increment_counter', {
+        method: 'POST',
+      }).then((res: any) => {
+        buttonClicks.value = res.clicks;
+        buttonDisabled.value = false;
+      });
     }, 200);
   }
 };

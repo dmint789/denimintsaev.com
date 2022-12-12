@@ -17,11 +17,10 @@ useHead({
 
 const ksS = useKanjiSorterStore();
 
-ksS.kanjiData = (await myFetch('/kanji_data.json')).data.value as IKanjiDB[];
-ksS.kanjiLists = (await myFetch('/kanji_lists.json')).data.value as IKanjiLists;
-// console.log(ksS.kanjiData);
-
 if (process.client) {
+  ksS.kanjiData = (await myFetch('/kanji_data.json')) as IKanjiDB[];
+  ksS.kanjiLists = (await myFetch('/kanji_lists.json')) as IKanjiLists;
+
   const tempKanjiList = JSON.parse(localStorage.getItem('kanji-list') || '{}');
 
   if (Object.keys(tempKanjiList).length > 0) {
