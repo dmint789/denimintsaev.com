@@ -22,7 +22,7 @@ const onChangeUpdate = (value) => {
     <MyHeader :size="3" noPadd>Result</MyHeader>
     <div class="p-2 flex flex-wrap justify-between items-center text-2xl">
       <MyCheckbox name="update" text="Update" :checked="ksS.update" @change="onChangeUpdate" />
-      <MyHeader noCenter :size="2">Unique: {{ ksS.uniqueKanji }} | Total: {{ ksS.totalKanji }}</MyHeader>
+      <MyHeader noCenter :size="2">{{ ksS.getStats }}</MyHeader>
     </div>
     <KanjiSorterDisplay :listType="ListType.Results" />
     <div class="grid grid-cols-2 gap-2 md:gap-4">

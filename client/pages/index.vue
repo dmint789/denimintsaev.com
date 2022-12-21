@@ -24,7 +24,7 @@ const onButtonClick = async () => {
         buttonClicks.value = res.clicks;
         buttonDisabled.value = false;
       });
-    }, 200);
+    }, 150);
   }
 };
 </script>
@@ -33,10 +33,9 @@ const onButtonClick = async () => {
   <div>
     <PageSection :py="3" class="bg-yellow-400">
       <p class="text-justify">
-        This website is currently a work-in-progress. I am rebuilding it from the ground up, due to Wix
-        stopping service for users based in Russia. The old website will be available through
+        This website is currently a work-in-progress. The old website will be available through
         <NuxtLink to="https://dmintsaev.wixsite.com/website">this link</NuxtLink>
-        until I rebuild most of the old functionality. However, the
+        until I rebuild most of the old functionality. The
         <NuxtLink to="/kanjisorter">Kanji Sorter</NuxtLink> is already available here (and improved), so feel
         free to use it.
       </p>

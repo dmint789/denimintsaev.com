@@ -30,8 +30,12 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
       // Final output for the kanji only view
       kanjiOnly: { sorted: '', unsorted: '' } as IKanjiOnly,
     },
-    uniqueKanji: 0,
-    totalKanji: 0,
+    resultsStats: {
+      uniqueFiltered: 0, // used when filter is selected
+      unique: 0,
+      filtered: null, // used for text order with a filter selected
+      total: 0,
+    },
     mode: Mode.Replace,
     update: true,
     resultsSettings: {
@@ -82,6 +86,22 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
         }
         return output;
       },
+    getStats: (state: any) => {
+      let output = '';
+
+      if (state.resultsSettings.filterType !== FilterType.None) {
+        output += `Unique & filtered: ${state.resultsStats.uniqueFiltered} | `;
+      } else {
+        output += `Unique: ${state.resultsStats.unique} | `;
+      }
+
+      if (state.resultsStats.filtered !== null) {
+        output += `Filtered: ${state.resultsStats.filtered} | `;
+      }
+
+      output += `Total: ${state.resultsStats.total}`;
+      return output;
+    },
   },
 
   /**
@@ -103,6 +123,9 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
         let tempUnsorted = [] as Array<IKanji>;
         let tempAllFiltered = [] as Array<number>;
         let tempKanjiOnly = { sorted: '', unsorted: '' } as IKanjiOnly; // for the kanji only output
+        // With these two variables we count unsorted kanji in loop() and the rest in setNextKanji()
+        let tempUniqueFiltered = 0;
+        let tempUnique = 0;
 
         // Initialize sorted list depending on the sort type
         if (sortType === SortType.TextOrder) tempTextSorted = new Array<IKanjiMin>();
@@ -132,16 +155,21 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
             } else if (kanjiOccurrences[id] === 1) {
               if (isSortable(kanji, sortType)) {
                 tempSorted.addToList(id);
-              } else if (
-                isInFilter(kanji, filterType, this.resultsSettings.negativeFilter, this.kanjiList.list[id])
-              ) {
-                tempUnsorted.push({
-                  ...kanji,
-                  occurrences: kanjiOccurrences[id],
-                  index: -1,
-                });
-                tempKanjiOnly.unsorted += kanji.c;
-                tempAllFiltered.push(id);
+              } else {
+                tempUnique++;
+
+                if (
+                  isInFilter(kanji, filterType, this.resultsSettings.negativeFilter, this.kanjiList.list[id])
+                ) {
+                  tempUnsorted.push({
+                    ...kanji,
+                    occurrences: kanjiOccurrences[id],
+                    index: -1,
+                  });
+                  tempKanjiOnly.unsorted += kanji.c;
+                  tempAllFiltered.push(id);
+                  tempUniqueFiltered++;
+                }
               }
             }
           }
@@ -167,27 +195,30 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
 
         // Save the sorted list into an array ready for display while filtering it and assigning indices
         let tempSortedKanji = [] as Array<IKanji>;
-        let tempUniqueKanji = 0;
+        let tempFiltered = 0;
 
         const setNextKanji = (kanjiId: number, repeat: boolean) => {
-          let fullKanji = this.kanjiData[kanjiId];
+          const fullKanji = this.kanjiData[kanjiId];
+          const kanjiIsInFilter = isInFilter(
+            fullKanji,
+            filterType,
+            this.resultsSettings.negativeFilter,
+            this.kanjiList.list[kanjiId],
+          );
 
-          if (
-            isInFilter(
-              fullKanji,
-              filterType,
-              this.resultsSettings.negativeFilter,
-              this.kanjiList.list[kanjiId],
-            )
-          ) {
+          if (!repeat) tempUnique++;
+
+          if (kanjiIsInFilter) {
+            tempFiltered++;
+
             if (!repeat) {
-              tempUniqueKanji++;
+              tempUniqueFiltered++;
               tempAllFiltered.push(kanjiId);
             }
 
             tempSortedKanji.push({
               ...fullKanji,
-              index: repeat ? 0 : tempUniqueKanji,
+              index: repeat ? 0 : tempUniqueFiltered,
               occurrences: kanjiOccurrences[kanjiId],
             });
             tempKanjiOnly.sorted += fullKanji.c; // for kanjionly view
@@ -207,24 +238,29 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
           }
         }
 
-        // Add unsorted kanji to the unique kanji total (unsorted kanji can't have repeats anyways)
-        tempUniqueKanji += tempUnsorted.length;
-
         // Mutations
         this.results.original = tempOriginal;
         this.results.sorted = tempSortedKanji;
         this.results.unsorted = tempUnsorted;
         this.results.allFiltered = tempAllFiltered;
         this.results.kanjiOnly = tempKanjiOnly;
-        this.uniqueKanji = tempUniqueKanji;
-        this.totalKanji = tempOriginal.length;
+
+        // Stats mutations
+        this.resultsStats.uniqueFiltered = tempUniqueFiltered;
+        this.resultsStats.unique = tempUnique;
+        this.resultsStats.filtered =
+          this.resultsSettings.sortType === SortType.TextOrder &&
+          this.resultsSettings.filterType !== FilterType.None
+            ? tempFiltered
+            : null;
+        this.resultsStats.total = tempOriginal.length;
 
         if (this.resultsSettings.reversed) this.changeSortingDirection();
       }
     },
     // add is true when we're adding more characters to the list, as opposed to resorting the existing list
     sortKanjiList(add = false) {
-      if (this.uniqueKanji > 0 || !add) {
+      if (this.resultsStats.unique > 0 || !add) {
         const input = (
           add ? [...this.kanjiList.original, ...this.results.allFiltered] : this.kanjiList.original
         ) as Array<number>;
@@ -301,8 +337,10 @@ export const useKanjiSorterStore = defineStore('kanjiSorterStore', {
       this.results.sorted = [];
       this.results.unsorted = [];
       this.results.kanjiOnly = { sorted: '', unsorted: '' };
-      this.uniqueKanji = 0;
-      this.totalKanji = 0;
+      this.resultsStats.uniqueFiltered = 0;
+      this.resultsStats.unique = 0;
+      this.resultsStats.filtered = null;
+      this.resultsStats.total = 0;
     },
     clearKanjiList() {
       this.kanjiList.original = [];
