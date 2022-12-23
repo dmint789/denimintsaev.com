@@ -14,6 +14,13 @@ const onUpdateInput = () => {
   isInputNew.value = true;
 };
 
+const handleShortcuts = (e: any) => {
+  if ((e.key === 'y' || e.key === ';') && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    onGetKanji(e.key === ';');
+  }
+};
+
 const onGetKanji = (newK = false) => {
   // Check that the input isn't empty and that we are adding kanji or something has changed since last time
   if (inputBox.value && (ksS.mode === Mode.Add || isInputNew.value || newK !== lastNewK.value)) {
@@ -70,10 +77,11 @@ const onModeChange = (value: Mode) => {
       placeholder="Enter text here"
       v-model="inputBox"
       @change="onUpdateInput"
+      @keydown="handleShortcuts"
       class="big-input-output-box min-h-[8rem] h-52 max-h-96 my-4 text-xl md:text-2xl"
     ></textarea>
     <div class="custom-grid gap-2 md:gap-4">
-      <MyButton @click="onGetKanji" size="md" class="z-10 w-full">Get kanji</MyButton>
+      <MyButton @click="onGetKanji" size="md" title="Ctrl-y" class="z-10 w-full">Get kanji</MyButton>
       <div class="relative">
         <!-- The 1.75rem is half of the default height of a MyButton -->
         <svg height="80" width="50" class="absolute" style="left: -24px; top: 1.75rem">
@@ -81,7 +89,9 @@ const onModeChange = (value: Mode) => {
           <line x1="25" y1="1" x2="25" y2="80" style="stroke: black; stroke-width: 2" />
         </svg>
       </div>
-      <MyButton @click="onGetKanji(true)" size="md" class="z-10 w-full">Get new kanji</MyButton>
+      <MyButton @click="onGetKanji(true)" size="md" title="Ctrl-;" class="z-10 w-full"
+        >Get new kanji</MyButton
+      >
       <MyButton @click="onClear" size="md" class="w-full">Clear</MyButton>
       <MyButton @click="onImportList" size="md" class="w-full">Import list</MyButton>
       <div
