@@ -24,7 +24,7 @@ const onButtonClick = async () => {
         buttonClicks.value = res.clicks;
         buttonDisabled.value = false;
       });
-    }, 150);
+    }, 200);
   }
 };
 </script>

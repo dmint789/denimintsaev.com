@@ -5,7 +5,7 @@ echo "Please give the new version tag:" && read NEW_VERSION
 
 if [ -z $1 ] || [ $1 != 'nogit' ]; then
   git push origin main &&
-  git tag --force -a $NEW_VERSION -m "Version $NEW_VERSION" &&
+  git tag --force --annotate $NEW_VERSION -m "Version $NEW_VERSION" &&
   git push --force origin --tags
 fi
 
