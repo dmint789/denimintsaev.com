@@ -16,3 +16,13 @@ withDefaults(
     </div>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.page-section {
+  @apply mx-auto px-3 w-full max-w-screen-lg;
+}
+
+.page-section > p {
+  @apply text-base md:text-lg;
+}
+</style>

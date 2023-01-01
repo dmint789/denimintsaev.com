@@ -41,7 +41,7 @@ const onButtonClick = async () => {
       </p>
     </PageSection>
     <PageSection class="bg-mygray-900">
-      <MyHeader :size="5" white>Hello!</MyHeader>
+      <MyHeader white :size="5">Hello!</MyHeader>
       <p class="text-justify text-white">
         My name is Deni and I come from Russia. My main activities include language learning, YouTube,
         speedcubing and music.<br /><br />
@@ -56,7 +56,7 @@ const onButtonClick = async () => {
     </PageSection>
     <PageSection>
       <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        <img src="/patreon_logo.png" alt="Patreon Logo" class="mx-16 md:mx-0 w-96 max-w-full aspect-square" />
+        <img src="/patreon_logo.png" alt="Patreon Logo" class="w-96 max-w-[80%] aspect-square" />
         <div class="flex flex-col items-center">
           <MyHeader :size="4">Patreon</MyHeader>
           <p class="text-justify pb-8">

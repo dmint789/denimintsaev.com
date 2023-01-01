@@ -10,7 +10,6 @@ const props = withDefaults(
     // For now the only use for noBorder is in the nav bar, which needs to have smaller buttons.
     // This is not compatible with size 'any'.
     noBorder?: boolean;
-    external?: boolean;
     disabled?: boolean;
     active?: boolean;
     link?: string;
@@ -20,7 +19,6 @@ const props = withDefaults(
     white: false,
     grayHover: false,
     noBorder: false,
-    external: false,
     disabled: false,
     active: false,
   },
