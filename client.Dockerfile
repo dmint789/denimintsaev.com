@@ -10,7 +10,7 @@ WORKDIR /home/app
 ENV HOST=0.0.0.0
 ENV PORT=3000
 # API base URL (my own variable)
-ENV API_BASE_URL='https://denimintsaev.com/api/'
+ENV API_BASE_URL='https://denimintsaev.com/api'
 
 RUN npm install && npm run build
 
